@@ -1,13 +1,123 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+    /* Solid colors */
+    --Main-Purple: #635FC7;
+    --Main-Purple-Hover-1: hsla(242, 100%, 82%, 0.1);
+    --Main-Purple-Hover-2: hsla(242, 100%, 82%, 0.25);
+    --Main-Purple-Hover-3: hsla(242, 100%, 82%, 1);
+    --Black: #000112;
+    --Very-Dark-Grey-Dark-BG: #20212C;
+    --Dark-Grey: #2B2C37;
+    --Error-Color: hsla(0, 78%, 63%, 1);
+    --Lines-Dark: #3E3F4E;
+    --Medium-Grey: #828FA3;
+    --Light-Grey-Light-BG: #F4F7FD;
+    --Lines-Light: #E4EBFA;
+    /* Loss: 1.6 */
+    --Medium-Grey-To-Red-Filter-Color: invert(35%) sepia(41%) saturate(1802%) hue-rotate(324deg) brightness(111%) contrast(84%);
+    --Red: #EA5555;
+    --Red-Hover: #FF9898;
+    --White: #FFFFFF;
+    /* Headings */
+    --Heading-XL: 1.5rem;
+    --Heading-L: 1.125rem;
+    --Heading-M: 0.9375rem;
+    --Heading-S: 0.75rem;
+    /* Container widths */
+    --application-width: 90rem;
+    /* Font sizes */
+    --font-size-12: 0.75rem;
+    --font-size-13: 0.8125rem;
+    --font-size-15: 0.9375rem;
+    --font-size-18: 1.125rem;
+    --font-size-20: 1.25rem;
+    --font-size-24: 1.5rem;
+    /* Font weight */
+    --font-weight-5: 500;
+    --font-weight-7: 700;
+    /* Line height */
+    --line-height-15: 0.9375rem;
+    --line-height-19: 1.1875rem;
+    --line-height-23: 1.4375rem;
+    --line-height-25: 1.5625rem;
+    --line-height-30: 1.875rem;
+    /* border radius */
+    --border-radius-24: 1.5rem;
+
+    /* dark theme */
+    --Add-New-Subtask-Background-Color: var(--White);
+    --Add-New-Subtask-Background-Color-Hover: var(--White);
+    --Add-New-Task-Button-Background-Color-Hover: var(--Main-Purple);
+    --Border-Color: var(--Lines-Dark);
+    --Cancel-Button-Background-Color: var(--White);
+    --Dark-Light-Mode-Switch-Background-Color: var(--Very-Dark-Grey-Dark-BG);
+    --Dialog-Text-1-Color: var(--White);
+    --Header-Background-Color: var(--Dark-Grey);
+    --Main-Text-Color: var(--White);
+    --New-Column-Background-Color: var(--Dark-Grey);
+    --Placeholder-Text-Color: hsla(0, 0%, 100%, 1);
+    --Sidebar-Background-Color: var(--Dark-Grey);
+    --Task-Preview-Background-Color: var(--Dark-Grey);
+    --Taskboard-Background-Color: var(--Very-Dark-Grey-Dark-BG);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+*, ::before, ::after {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
+
+html {
+    font-size: 16px;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--Dark-Light-Mode-Switch-Background-Color);
+    color: var(--Main-Text-Color);
+}
+
+body.light {
+    --Add-New-Subtask-Background-Color: var(--Main-Purple-Hover-1);
+    --Add-New-Subtask-Background-Color-Hover: var(--Main-Purple-Hover-2);
+    --Add-New-Task-Button-Background-Color: var(--Main-Purple);
+    --Add-New-Task-Button-Background-Color-Hover: var(--Main-Purple-Hover-3);
+    --Border-Color: var(--Lines-Light);
+    --Cancel-Button-Background-Color: var(--Main-Purple-Hover-1);
+    --Dark-Light-Mode-Switch-Background-Color: var(--Light-Grey-Light-BG);
+    --Dialog-Text-1-Color: var(--Medium-Grey);
+    --Header-Background-Color: var(--White);
+    --Main-Text-Color: var(--Black);
+    --New-Column-Background-Color: var(--Main-Purple-Hover-1);
+    --Placeholder-Text-Color: hsla(237, 100%, 4%, 1);
+    --Sidebar-Background-Color: var(--White);
+    --Task-Preview-Background-Color: var(--White);
+    --Taskboard-Background-Color: var(--Light-Grey-Light-BG);
+}
+
+img {
+    width: 100%;
+    display: block;
+}
+
+.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
