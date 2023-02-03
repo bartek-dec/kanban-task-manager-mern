@@ -16,7 +16,6 @@ const Logo = () => {
 export default Logo;
 
 const Wrapper = styled.div`
-  padding: 1rem;
   width: fit-content;
   display: flex;
   align-items: center;
