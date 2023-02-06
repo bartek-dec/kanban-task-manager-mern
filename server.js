@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import connectDB from "./db/connect.js";
+import authRouter from "./routes/authRouter.js";
 
 // middleware
 import notFoundMiddleware from "./middleware/notFound.js";
@@ -14,6 +15,9 @@ dotenv.config();
 app.get('/', (req, res) => {
     res.send('welcone');
 });
+
+// routes
+app.use('/api/v1/auth', authRouter);
 
 // catch errors
 app.use(notFoundMiddleware);
