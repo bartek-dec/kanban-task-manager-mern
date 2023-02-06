@@ -1,11 +1,12 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import 'express-async-errors';
 import connectDB from "./db/connect.js";
-import authRouter from "./routes/authRouter.js";
 
 // middleware
 import notFoundMiddleware from "./middleware/notFound.js";
 import errorHandlerMiddleware from "./middleware/errorHandler.js";
+import authRouter from "./routes/authRouter.js";
 
 const app = express();
 app.use(express.json());
