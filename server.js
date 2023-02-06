@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import connectDB from "./db/connect.js";
 
 // middleware
 import notFoundMiddleware from "./middleware/notFound.js";
@@ -20,6 +21,15 @@ app.use(errorHandlerMiddleware);
 
 const port = process.env.PORT || 5000;
 
-app.listen(port, () => {
-    console.log('server is running');
-})
+const start = async () => {
+    try {
+        await connectDB(process.env.DB_URL);
+        app.listen(port, () => {
+            console.log(`server is running on port: ${port}`);
+        });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+start();
