@@ -19,7 +19,7 @@ const Landing = () => {
                         <Link to='/register' className='btn register-btn'>Login/Register</Link>
                     </div>
                     <div className='graphic'>
-                        <img src={image} alt='kanban image'/>
+                        <img src={image} alt='kanban graphic'/>
                     </div>
                 </div>
             </div>

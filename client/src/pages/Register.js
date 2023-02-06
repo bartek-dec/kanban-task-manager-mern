@@ -2,8 +2,9 @@ import styled from "styled-components";
 import {Logo, FormInput, Alert} from "../components";
 import {useSelector, useDispatch} from "react-redux";
 import {useState, useEffect} from "react";
+import {useNavigate} from "react-router-dom";
 import validator from "validator";
-import {setShowAlert, setAlertText} from "../features/registerLogin/registerLoginSlice";
+import {setShowAlert, setAlertText, registerUser} from "../features/registerLogin/registerLoginSlice";
 
 const initialState = {
     name: '',
@@ -22,7 +23,8 @@ const Register = () => {
     const [values, setValues] = useState(initialState);
     const [errors, setErrors] = useState(inputErrors);
     const dispatch = useDispatch();
-    const {showAlert} = useSelector((state) => state.register);
+    const {showAlert, isLoading, user} = useSelector((state) => state.register);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const ID = setTimeout(() => {
@@ -34,8 +36,14 @@ const Register = () => {
         return () => {
             clearTimeout(ID);
         }
+        // eslint-disable-next-line
+    }, [errors, showAlert]);
 
-    }, [errors]);
+    useEffect(() => {
+        if (user) {
+            navigate('/');
+        }
+    }, [user, navigate]);
 
     const handleChange = (e) => {
         setValues({...values, [e.target.name]: e.target.value});
@@ -82,7 +90,13 @@ const Register = () => {
             });
             return;
         }
-        console.log('hello');
+
+        const currentUser = {name, email, password};
+        if (isMember) {
+            console.log('already a member')
+        } else {
+            dispatch(registerUser(currentUser));
+        }
     }
 
     return (
@@ -105,7 +119,7 @@ const Register = () => {
                 <FormInput type='password' error={errors.passwordError} name='password' value={values.password}
                            handleChange={handleChange}/>
 
-                <button type='submit' className='btn submit-btn'>Submit</button>
+                <button disabled={isLoading} type='submit' className='btn submit-btn'>Submit</button>
 
                 <div className='swap'>
                     <p>{values.isMember ? 'Not a member yet?' : 'Already a member?'}</p>
@@ -159,7 +173,12 @@ const Wrapper = styled.main`
   }
 
   .submit-btn:hover {
+    background-color: var(--Main-Purple-Hover-3);
+  }
+
+  .submit-btn:disabled {
     background-color: var(--Main-Purple-Hover-2);
+    cursor: auto;
   }
 
   .swap {
