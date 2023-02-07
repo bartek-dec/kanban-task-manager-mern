@@ -76,7 +76,7 @@ const Wrapper = styled.main`
   }
 
   .register-btn:hover {
-    background-color: var(--Main-Purple-Hover-2);
+    background-color: var(--Main-Purple-Hover-3);
   }
 
   .graphic {
