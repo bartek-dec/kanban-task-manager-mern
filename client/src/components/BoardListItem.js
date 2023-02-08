@@ -50,7 +50,7 @@ const Wrapper = styled.button`
 
   .active {
     background-color: var(--Main-Purple);
-    color: var(--Main-Text-Color);
+    color: var(--White);
   }
 
   .btn-container:hover .icon-img {
