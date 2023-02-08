@@ -49,6 +49,8 @@
 
     --transition: 0.3s all linear;
 
+    --Navbar-Height: 6rem;
+
     /* dark theme */
     --Add-New-Subtask-Background-Color: var(--White);
     --Add-New-Subtask-Background-Color-Hover: var(--White);
@@ -62,6 +64,7 @@
     --New-Column-Background-Color: var(--Dark-Grey);
     --Placeholder-Text-Color: hsla(0, 0%, 100%, 1);
     --Sidebar-Background-Color: var(--Dark-Grey);
+    --Navbar-Background-Color: var(--Dark-Grey);
     --Form-Background-Color: var(--Dark-Grey);
     --Task-Preview-Background-Color: var(--Dark-Grey);
     --Taskboard-Background-Color: var(--Very-Dark-Grey-Dark-BG);
@@ -97,6 +100,7 @@ body.light {
     --New-Column-Background-Color: var(--Main-Purple-Hover-1);
     --Placeholder-Text-Color: hsla(237, 100%, 4%, 1);
     --Sidebar-Background-Color: var(--White);
+    --Navbar-Background-Color: var(--White);
     --Form-Background-Color: var(--White);
     --Task-Preview-Background-Color: var(--White);
     --Taskboard-Background-Color: var(--Light-Grey-Light-BG);
