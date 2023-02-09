@@ -2,7 +2,7 @@ import styled from "styled-components";
 import {BsSunFill, BsMoonStarsFill} from 'react-icons/bs';
 import {useSelector, useDispatch} from "react-redux";
 import {setTheme} from "../features/theme/themeSlice";
-import {useEffect,useRef} from "react";
+import {useEffect, useRef} from "react";
 
 const ToggleTheme = () => {
     const {theme} = useSelector((state) => state.theme);
@@ -46,10 +46,8 @@ export default ToggleTheme;
 
 const Wrapper = styled.article`
   background-color: var(--Dark-Light-Mode-Switch-Background-Color);
-  position: absolute;
-  bottom: 2rem;
-  left: 1.5rem;
-  right: 1.5rem;
+  margin-left: 1.5rem;
+  width: 15rem;
   border-radius: var(--border-radius-6);
   padding: 1rem;
 
