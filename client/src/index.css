@@ -50,6 +50,7 @@
     --transition: 0.3s all linear;
 
     --Navbar-Height: 6rem;
+    --Settings-Height: 12rem;
 
     /* dark theme */
     --Add-New-Subtask-Background-Color: var(--White);
@@ -125,6 +126,13 @@ img {
     letter-spacing: 1px;
     transition: var(--transition);
     border-radius: var(--border-radius-4);
+}
+
+.icon-img {
+    width: 1.35rem;
+    height: 1.35rem;
+    margin-right: 1rem;
+    stroke-width: 1;
 }
 
 
