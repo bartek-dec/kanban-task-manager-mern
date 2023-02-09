@@ -135,6 +135,33 @@ img {
     stroke-width: 1;
 }
 
+.board-btn {
+    border: none;
+    width: 100%;
+    background-color: transparent;
+    padding: 0.85rem;
+    padding-left: 2rem;
+    text-transform: capitalize;
+    font-size: var(--font-size-15);
+    border-top-right-radius: var(--border-radius-24);
+    border-bottom-right-radius: var(--border-radius-24);
+    color: var(--Medium-Grey);
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+}
+
+.board-btn:hover {
+    background-color: var(--Light-Grey-Light-BG);
+    color: var(--Main-Purple);
+}
+
+.active {
+    background-color: var(--Main-Purple);
+    color: var(--White);
+}
+
 
 
 
