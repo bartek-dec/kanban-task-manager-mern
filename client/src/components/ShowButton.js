@@ -4,7 +4,7 @@ import {BsEye} from 'react-icons/bs';
 const ShowButton = () => {
 
     return (
-        <Wrapper type='button' onClick={handleClick}>
+        <Wrapper type='button'>
             <BsEye className='icon-img show-icon'/>
         </Wrapper>
     );
