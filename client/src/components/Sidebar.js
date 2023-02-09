@@ -1,12 +1,15 @@
 import styled from "styled-components";
-import {Logo, BoardListItem, ToggleTheme} from '../components'
+import {Logo, BoardListItem, ToggleTheme, HideButton, ShowButton, UserButton} from '../components';
+import {useSelector} from "react-redux";
 
 const Sidebar = () => {
+    const {isSidebarVisible} = useSelector((state) => state.sidebar);
+
     const titles = ['platform launch', 'marketing plan', 'roadmap']
 
     return (
         <Wrapper>
-            <div className='container '>
+            <div className={isSidebarVisible ? 'container' : 'container hide-sidebar'}>
                 <div className='logo-container'>
                     <Logo/>
                 </div>
@@ -18,7 +21,12 @@ const Sidebar = () => {
                     })}
                 </div>
 
-                <ToggleTheme/>
+                <div className='settings-container'>
+                    <ToggleTheme/>
+                    <HideButton/>
+                    <UserButton/>
+                </div>
+                <ShowButton/>
             </div>
         </Wrapper>
     );
@@ -27,8 +35,6 @@ const Sidebar = () => {
 export default Sidebar;
 
 const Wrapper = styled.aside`
-  position: relative;
-
   .container {
     width: 18rem;
     height: 100vh;
@@ -47,6 +53,7 @@ const Wrapper = styled.aside`
 
   .boards-container {
     width: 100%;
+    height: calc(100vh - (var(--Navbar-Height) + var(--Settings-Height)));
   }
 
   .boards-header {
@@ -57,6 +64,15 @@ const Wrapper = styled.aside`
     padding-left: 2rem;
     margin-bottom: 0.5rem;
     color: var(--Medium-Grey);
+  }
+
+  .settings-container {
+    height: var(--Settings-Height);
+    padding: 1rem 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
   @media (min-width: 650px) {

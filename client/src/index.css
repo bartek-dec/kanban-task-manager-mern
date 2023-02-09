@@ -162,6 +162,10 @@ img {
     color: var(--White);
 }
 
+.visible{
+    display: block !important;
+}
+
 
 
 
