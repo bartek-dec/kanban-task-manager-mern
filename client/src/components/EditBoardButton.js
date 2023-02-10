@@ -29,4 +29,8 @@ const Wrapper = styled.button`
   .dots-icon {
     stroke-width: 5;
   }
+
+  &:hover {
+    color: var(--Main-Purple);
+  }
 `;
