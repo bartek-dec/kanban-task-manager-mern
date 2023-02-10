@@ -10,6 +10,7 @@ import ShowButton from "./ShowButton";
 import UserButton from "./UserButton";
 import AddTaskButton from "./AddTaskButton";
 import EditBoardButton from "./EditBoardButton";
+import LogoutButton from "./LogoutButton";
 
 export {
     Logo,
@@ -23,5 +24,6 @@ export {
     ShowButton,
     UserButton,
     AddTaskButton,
-    EditBoardButton
+    EditBoardButton,
+    LogoutButton
 }
