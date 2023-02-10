@@ -41,8 +41,8 @@ const Wrapper = styled.div`
     border: none;
     border-radius: var(--border-radius-6);
     color: var(--Red);
-    font-weight: var(--font-weight-7);
-    font-size: var(--font-size-20);
+    font-weight: var(--font-weight-5);
+    font-size: var(--font-size-18);
     cursor: pointer;
     transition: transform 0.3s linear;
   }
