@@ -20,6 +20,7 @@ const Wrapper = styled.button`
   cursor: pointer;
   height: 2rem;
   width: 2rem;
+  margin-right: 1rem;
 
   display: flex;
   flex-direction: column;
