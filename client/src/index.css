@@ -50,7 +50,7 @@
     --transition: 0.3s all linear;
 
     --Navbar-Height: 6rem;
-    --Settings-Height: 14rem;
+    --Settings-Height: 12.5rem;
 
     /* dark theme */
     --Add-New-Subtask-Background-Color: var(--White);
