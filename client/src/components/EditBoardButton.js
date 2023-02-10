@@ -1,9 +1,17 @@
 import styled from "styled-components";
 import {BsDot} from 'react-icons/bs';
+import {useDispatch} from "react-redux";
+import {showModal} from "../features/board/boardSlice";
 
 const EditBoardButton = () => {
+    const dispatch = useDispatch();
+
+    const handleClick = () => {
+        dispatch(showModal());
+    }
+
     return (
-        <Wrapper>
+        <Wrapper type='button' onClick={handleClick}>
             <BsDot className='dots-icon'/>
             <BsDot className='dots-icon'/>
             <BsDot className='dots-icon'/>
