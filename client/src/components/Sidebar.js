@@ -1,11 +1,9 @@
 import styled from "styled-components";
-import {Logo, BoardListItem, ToggleTheme, HideButton, ShowButton, UserButton} from '../components';
+import {Logo, ToggleTheme, HideButton, ShowButton, UserButton, BoardsContainer} from '../components';
 import {useSelector} from "react-redux";
 
 const Sidebar = () => {
     const {isSidebarVisible} = useSelector((state) => state.sidebar);
-
-    const titles = ['platform launch', 'marketing plan', 'roadmap']
 
     return (
         <Wrapper>
@@ -14,12 +12,7 @@ const Sidebar = () => {
                     <Logo/>
                 </div>
 
-                <div className='boards-container'>
-                    <h4 className='boards-header'>all boards (3)</h4>
-                    {titles.map((item, index) => {
-                        return <BoardListItem key={index} id={index} title={item}/>
-                    })}
-                </div>
+                <BoardsContainer/>
 
                 <div className='settings-container'>
                     <ToggleTheme/>
@@ -51,20 +44,20 @@ const Wrapper = styled.aside`
     align-items: center;
   }
 
-  .boards-container {
-    width: 100%;
-    height: calc(100vh - (var(--Navbar-Height) + var(--Settings-Height)));
-  }
-
-  .boards-header {
-    text-transform: uppercase;
-    font-size: var(--font-size-13);
-    letter-spacing: 3px;
-    padding: 0.75rem;
-    padding-left: 2rem;
-    margin-bottom: 0.5rem;
-    color: var(--Medium-Grey);
-  }
+  //.boards-container {
+  //  width: 100%;
+  //  height: calc(100vh - (var(--Navbar-Height) + var(--Settings-Height)));
+  //}
+  //
+  //.boards-header {
+  //  text-transform: uppercase;
+  //  font-size: var(--font-size-13);
+  //  letter-spacing: 3px;
+  //  padding: 0.75rem;
+  //  padding-left: 2rem;
+  //  margin-bottom: 0.5rem;
+  //  color: var(--Medium-Grey);
+  //}
 
   .settings-container {
     height: var(--Settings-Height);

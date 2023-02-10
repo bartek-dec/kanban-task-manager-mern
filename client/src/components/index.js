@@ -14,6 +14,7 @@ import LogoutButton from "./LogoutButton";
 import CreateBoardButton from "./CreateBoardButton";
 import LogoutModal from "./LogoutModal";
 import EditBoardModal from "./EditBoardModal";
+import BoardsContainer from "./BoardsContainer";
 
 export {
     Logo,
@@ -31,5 +32,6 @@ export {
     LogoutButton,
     CreateBoardButton,
     LogoutModal,
-    EditBoardModal
+    EditBoardModal,
+    BoardsContainer
 }
