@@ -13,6 +13,7 @@ import EditBoardButton from "./EditBoardButton";
 import LogoutButton from "./LogoutButton";
 import CreateBoardButton from "./CreateBoardButton";
 import LogoutModal from "./LogoutModal";
+import EditBoardModal from "./EditBoardModal";
 
 export {
     Logo,
@@ -29,5 +30,6 @@ export {
     EditBoardButton,
     LogoutButton,
     CreateBoardButton,
-    LogoutModal
+    LogoutModal,
+    EditBoardModal
 }
