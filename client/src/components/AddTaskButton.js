@@ -36,16 +36,17 @@ const Wrapper = styled.button`
   }
 
   .plus-icon {
-    display: flex;
-    align-items: center;
     width: 1rem;
     height: 1rem;
+    display: flex;
+    align-items: center;
   }
 
   @media (min-width: 650px) {
     padding: 0.85rem 1.5rem;
     border-radius: var(--border-radius-24);
     span {
+      margin-left: 0.3rem;
       display: inline;
     }
   }
