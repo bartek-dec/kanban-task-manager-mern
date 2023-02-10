@@ -40,6 +40,12 @@ const registerLoginSlice = createSlice({
         setAlertText: (state, action) => {
             state.alertText = action.payload;
         },
+        setUser: (state, action) => {
+            state.user = action.payload;
+        },
+        setToken: (state, action) => {
+            state.token = action.payload;
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(registerUser.pending, (state) => {
@@ -72,4 +78,4 @@ const registerLoginSlice = createSlice({
 
 export default registerLoginSlice.reducer;
 
-export const {setShowAlert, setAlertText} = registerLoginSlice.actions;
+export const {setShowAlert, setAlertText, setUser, setToken} = registerLoginSlice.actions;
