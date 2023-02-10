@@ -1,9 +1,17 @@
 import styled from "styled-components";
 import {MdLogout} from 'react-icons/md';
+import {useDispatch} from "react-redux";
+import {openModal} from "../features/logoutSlice/logoutSlice";
 
 const LogoutButton = () => {
+    const dispatch = useDispatch();
+
+    const handleOpenModal = () => {
+        dispatch(openModal());
+    }
+
     return (
-        <Wrapper>
+        <Wrapper onClick={handleOpenModal}>
             <MdLogout className='logout'/>
         </Wrapper>
     );
