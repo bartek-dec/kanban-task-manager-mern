@@ -20,7 +20,6 @@ export default BoardsContainer;
 
 const Wrapper = styled.div`
   width: 100%;
-  height: calc(100vh - (var(--Navbar-Height) + var(--Settings-Height)));
   
   .boards-header {
     text-transform: uppercase;
