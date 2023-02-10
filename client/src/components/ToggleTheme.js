@@ -65,7 +65,7 @@ const Wrapper = styled.article`
     margin: 0 1.5rem;
     position: relative;
     cursor: pointer;
-    transition: var(--transition);
+    transition: background-color 0.3s linear;
   }
 
   .toggle-switch:hover {
@@ -85,7 +85,7 @@ const Wrapper = styled.article`
     height: 0.85rem;
     border-radius: var(--border-radius-24);
     background-color: var(--White);
-    transition: var(--transition);
+    transition: transform 0.3s linear;
     pointer-events: none;
   }
 
