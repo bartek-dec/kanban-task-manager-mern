@@ -71,7 +71,7 @@ const Wrapper = styled.main`
   }
 
   .register-btn {
-    color: var(--Main-Text-Color);
+    color: var(--White);
     background-color: var(--Main-Purple);
   }
 

@@ -163,7 +163,7 @@ const Wrapper = styled.main`
 
   .submit-btn {
     background-color: var(--Main-Purple);
-    color: var(--Main-Text-Color);
+    color: var(--White);
     border: none;
     border-radius: var(--border-radius-4);
     width: 100%;
