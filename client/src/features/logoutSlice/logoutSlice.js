@@ -1,5 +1,4 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {removeUserFromLocalStorage} from "../../utils/localStorage";
 
 const initialState = {
     isModalOpen: false
