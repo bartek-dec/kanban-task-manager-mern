@@ -11,7 +11,7 @@ const LogoutButton = () => {
     }
 
     return (
-        <Wrapper onClick={handleOpenModal}>
+        <Wrapper type='button' onClick={handleOpenModal}>
             <MdLogout className='logout'/>
         </Wrapper>
     );
