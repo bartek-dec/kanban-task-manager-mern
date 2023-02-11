@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import {BoardsContainer, ToggleTheme, UserButton} from "./index";
 import {useDispatch, useSelector} from "react-redux";
-import {closeModal} from "../features/sidebarSlice/sidebarSlice";
+import {closeSidebarModal} from "../features/sidebarSlice/sidebarSlice";
 
 const SidebarModal = () => {
     const {isSidebarModalVisible} = useSelector((state) => state.sidebar);
@@ -9,7 +9,7 @@ const SidebarModal = () => {
 
     const handleModalClick = (e) => {
         if (e.target.classList.contains('modal')) {
-            dispatch(closeModal());
+            dispatch(closeSidebarModal());
         }
     }
 

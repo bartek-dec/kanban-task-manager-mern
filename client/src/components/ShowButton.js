@@ -3,7 +3,7 @@ import {BsEye} from 'react-icons/bs';
 import {useRef, useEffect, useState} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {showSidebar} from "../features/sidebarSlice/sidebarSlice";
-import {closeModal} from "../features/sidebarSlice/sidebarSlice";
+import {closeSidebarModal} from "../features/sidebarSlice/sidebarSlice";
 
 const ShowButton = () => {
     const [width, setWidth] = useState(window.innerWidth);
@@ -29,7 +29,7 @@ const ShowButton = () => {
 
         // close sidebar modal when screen width is higher than 650px
         if (width >= 650 && isSidebarModalVisible) {
-            dispatch(closeModal());
+            dispatch(closeSidebarModal());
         }
 
         return () => {

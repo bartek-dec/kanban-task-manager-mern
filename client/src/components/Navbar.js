@@ -2,7 +2,7 @@ import styled from "styled-components";
 import {useSelector, useDispatch} from "react-redux";
 import {AddTaskButton, EditBoardButton, LogoutButton, LogoutModal, EditBoardModal, SidebarModal} from "./index";
 import {IoIosArrowDown} from 'react-icons/io';
-import {showModal} from "../features/sidebarSlice/sidebarSlice";
+import {showSidebarModal} from "../features/sidebarSlice/sidebarSlice";
 
 const Navbar = () => {
     const {activeBtn, boards} = useSelector((state) => state.board);
@@ -10,7 +10,7 @@ const Navbar = () => {
     const boardTitle = boards[activeBtn];
 
     const handleClick = () => {
-        dispatch(showModal());
+        dispatch(showSidebarModal());
     }
 
     return (

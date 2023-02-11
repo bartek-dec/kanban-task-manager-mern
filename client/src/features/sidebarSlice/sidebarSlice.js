@@ -15,10 +15,10 @@ const sidebarSlice = createSlice({
         hideSidebar: (state) => {
             state.isSidebarVisible = false;
         },
-        showModal: (state) => {
+        showSidebarModal: (state) => {
             state.isSidebarModalVisible = true;
         },
-        closeModal: (state) => {
+        closeSidebarModal: (state) => {
             state.isSidebarModalVisible = false;
         }
     }
@@ -26,4 +26,4 @@ const sidebarSlice = createSlice({
 
 export default sidebarSlice.reducer;
 
-export const {showSidebar, hideSidebar, showModal, closeModal} = sidebarSlice.actions;
+export const {showSidebar, hideSidebar, showSidebarModal, closeSidebarModal} = sidebarSlice.actions;
