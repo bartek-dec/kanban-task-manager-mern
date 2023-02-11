@@ -23,7 +23,7 @@ const Register = () => {
     const [values, setValues] = useState(initialState);
     const [errors, setErrors] = useState(inputErrors);
     const dispatch = useDispatch();
-    const {showAlert, isLoading, user} = useSelector((state) => state.register);
+    const {showAlert, isLoading, user} = useSelector((state) => state.user);
     const navigate = useNavigate();
 
     useEffect(() => {
