@@ -7,7 +7,7 @@ import logoutSlice from "./features/logoutSlice/logoutSlice";
 
 const store = configureStore({
     reducer: {
-        register: userSlice,
+        user: userSlice,
         board: boardSlice,
         theme: themeSlice,
         sidebar: sidebarSlice,
