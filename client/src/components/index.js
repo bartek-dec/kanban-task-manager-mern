@@ -16,6 +16,8 @@ import LogoutModal from "./LogoutModal";
 import EditBoardModal from "./EditBoardModal";
 import BoardsContainer from "./BoardsContainer";
 import SidebarModal from "./SidebarModal";
+import UserModal from "./UserModal";
+import FormInputSmall from "./FormInputSmall";
 
 export {
     Logo,
@@ -35,5 +37,7 @@ export {
     LogoutModal,
     EditBoardModal,
     BoardsContainer,
-    SidebarModal
+    SidebarModal,
+    UserModal,
+    FormInputSmall
 }
