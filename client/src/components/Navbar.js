@@ -1,21 +1,33 @@
 import styled from "styled-components";
-import {useSelector} from "react-redux";
-import {AddTaskButton, EditBoardButton, LogoutButton, LogoutModal} from "./index";
+import {useSelector, useDispatch} from "react-redux";
+import {AddTaskButton, EditBoardButton, LogoutButton, LogoutModal, EditBoardModal, SidebarModal} from "./index";
 import {IoIosArrowDown} from 'react-icons/io';
+import {showModal} from "../features/sidebarSlice/sidebarSlice";
 
 const Navbar = () => {
     const {activeBtn, boards} = useSelector((state) => state.board);
+    const dispatch = useDispatch();
     const boardTitle = boards[activeBtn];
+
+    const handleClick = () => {
+        dispatch(showModal());
+    }
 
     return (
         <Wrapper>
-            <h2>{boardTitle} <span className='arrow'><IoIosArrowDown/></span></h2>
+            <h2>{boardTitle}
+                <button className='arrow-btn' onClick={handleClick}>
+                    <IoIosArrowDown className='arrow'/>
+                </button>
+            </h2>
             <div className='nav-btn-container'>
                 <AddTaskButton/>
                 <EditBoardButton/>
                 <LogoutButton/>
             </div>
             <LogoutModal/>
+            <EditBoardModal/>
+            <SidebarModal/>
         </Wrapper>
     );
 };
@@ -39,13 +51,13 @@ const Wrapper = styled.nav`
     align-items: center;
   }
 
-  .arrow {
+  .arrow-btn {
     margin-left: 0.5rem;
-    width: 1.5rem;
-    height: 1.5rem;
     color: var(--Main-Purple);
     cursor: pointer;
     transition: var(--transition);
+    background-color: transparent;
+    border: none;
 
     display: flex;
     align-items: center;
@@ -54,6 +66,11 @@ const Wrapper = styled.nav`
 
   .arrow:hover {
     color: var(--Main-Purple-Hover-3);
+  }
+
+  .arrow {
+    width: 1.5rem;
+    height: 1.5rem;
   }
 
   .nav-btn-container {
@@ -70,7 +87,7 @@ const Wrapper = styled.nav`
       font-size: var(--font-size-24);
     }
 
-    .arrow {
+    .arrow-btn {
       display: none;
     }
   }

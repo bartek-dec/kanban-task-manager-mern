@@ -3,10 +3,11 @@ import {BsEye} from 'react-icons/bs';
 import {useRef, useEffect, useState} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {showSidebar} from "../features/sidebarSlice/sidebarSlice";
+import {closeModal} from "../features/sidebarSlice/sidebarSlice";
 
 const ShowButton = () => {
     const [width, setWidth] = useState(window.innerWidth);
-    const {isSidebarVisible} = useSelector((state) => state.sidebar);
+    const {isSidebarVisible, isSidebarModalVisible} = useSelector((state) => state.sidebar);
     const dispatch = useDispatch();
     const btnRef = useRef(null);
 
@@ -24,6 +25,11 @@ const ShowButton = () => {
         // show button when screen size is more than 650px and sidebar is hidden
         if (width >= 650 && !isSidebarVisible) {
             btnRef.current.classList.add('visible');
+        }
+
+        // close sidebar modal when screen width is higher than 650px
+        if (width >= 650 && isSidebarModalVisible) {
+            dispatch(closeModal());
         }
 
         return () => {
