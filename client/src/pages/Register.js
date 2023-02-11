@@ -4,7 +4,7 @@ import {useSelector, useDispatch} from "react-redux";
 import {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import validator from "validator";
-import {setShowAlert, setAlertText, registerUser} from "../features/registerLogin/registerLoginSlice";
+import {setShowAlert, setAlertText, registerUser, loginUser} from "../features/registerLogin/registerLoginSlice";
 
 const initialState = {
     name: '',
@@ -93,7 +93,7 @@ const Register = () => {
 
         const currentUser = {name, email, password};
         if (isMember) {
-            console.log('already a member')
+            dispatch(loginUser(currentUser));
         } else {
             dispatch(registerUser(currentUser));
         }
@@ -163,7 +163,7 @@ const Wrapper = styled.main`
 
   .submit-btn {
     background-color: var(--Main-Purple);
-    color: var(--Main-Text-Color);
+    color: var(--White);
     border: none;
     border-radius: var(--border-radius-4);
     width: 100%;

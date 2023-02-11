@@ -49,6 +49,10 @@
 
     --transition: 0.3s all linear;
 
+    --Navbar-Height: 6rem;
+    --Settings-Height: 12.5rem;
+    --Sidebar-Width: 18rem;
+
     /* dark theme */
     --Add-New-Subtask-Background-Color: var(--White);
     --Add-New-Subtask-Background-Color-Hover: var(--White);
@@ -62,6 +66,7 @@
     --New-Column-Background-Color: var(--Dark-Grey);
     --Placeholder-Text-Color: hsla(0, 0%, 100%, 1);
     --Sidebar-Background-Color: var(--Dark-Grey);
+    --Navbar-Background-Color: var(--Dark-Grey);
     --Form-Background-Color: var(--Dark-Grey);
     --Task-Preview-Background-Color: var(--Dark-Grey);
     --Taskboard-Background-Color: var(--Very-Dark-Grey-Dark-BG);
@@ -81,6 +86,7 @@ body {
     font-family: 'Plus Jakarta Sans', sans-serif;
     background-color: var(--Dark-Light-Mode-Switch-Background-Color);
     color: var(--Main-Text-Color);
+    transition: background-color 0.05s linear, color 0.05s linear;
 }
 
 body.light {
@@ -97,6 +103,7 @@ body.light {
     --New-Column-Background-Color: var(--Main-Purple-Hover-1);
     --Placeholder-Text-Color: hsla(237, 100%, 4%, 1);
     --Sidebar-Background-Color: var(--White);
+    --Navbar-Background-Color: var(--White);
     --Form-Background-Color: var(--White);
     --Task-Preview-Background-Color: var(--White);
     --Taskboard-Background-Color: var(--Light-Grey-Light-BG);
@@ -123,6 +130,60 @@ img {
     border-radius: var(--border-radius-4);
 }
 
+.icon-img {
+    width: 1.35rem;
+    height: 1.35rem;
+    margin-right: 1rem;
+    stroke-width: 1;
+}
+
+.board-btn {
+    border: none;
+    width: 100%;
+    background-color: transparent;
+    padding: 0.85rem;
+    padding-left: 2rem;
+    text-transform: capitalize;
+    font-size: var(--font-size-15);
+    border-top-right-radius: var(--border-radius-24);
+    border-bottom-right-radius: var(--border-radius-24);
+    color: var(--Medium-Grey);
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+}
+
+.board-btn:hover {
+    background-color: var(--Light-Grey-Light-BG);
+    color: var(--Main-Purple);
+}
+
+.active {
+    background-color: var(--Main-Purple);
+    color: var(--White);
+}
+
+.visible {
+    display: block !important;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: all 0.1s linear;
+    z-index: -10;
+    visibility: hidden;
+}
+
+.show-modal {
+    visibility: visible;
+    z-index: 10;
+}
 
 
 

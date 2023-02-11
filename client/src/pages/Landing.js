@@ -71,12 +71,12 @@ const Wrapper = styled.main`
   }
 
   .register-btn {
-    color: var(--Main-Text-Color);
+    color: var(--White);
     background-color: var(--Main-Purple);
   }
 
   .register-btn:hover {
-    background-color: var(--Main-Purple-Hover-2);
+    background-color: var(--Main-Purple-Hover-3);
   }
 
   .graphic {

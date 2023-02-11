@@ -9,7 +9,15 @@ export const getUserFromLocalStorage = () => {
     return {user, token};
 }
 
-export const removeUserFromLocalStorage= () => {
+export const removeUserFromLocalStorage = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
+}
+
+export const getThemeFromLocalStorage = () => {
+    return localStorage.getItem('theme');
+}
+
+export const addThemeToLocalStorage = (theme) => {
+    localStorage.setItem('theme', theme);
 }
