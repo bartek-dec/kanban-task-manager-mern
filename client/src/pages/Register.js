@@ -4,7 +4,7 @@ import {useSelector, useDispatch} from "react-redux";
 import {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import validator from "validator";
-import {setShowAlert, setAlertText, registerUser, loginUser} from "../features/registerLogin/registerLoginSlice";
+import {setShowAlert, setAlertText, registerUser, loginUser} from "../features/user/userSlice";
 
 const initialState = {
     name: '',

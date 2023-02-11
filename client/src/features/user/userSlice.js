@@ -28,10 +28,10 @@ export const loginUser = createAsyncThunk('loginUser', async (currentUser, thunk
     } catch (error) {
         return thunkAPI.rejectWithValue(error.response.data.msg);
     }
-})
+});
 
-const registerLoginSlice = createSlice({
-    name: 'registerLoginSlice',
+const userSlice = createSlice({
+    name: 'userSlice',
     initialState,
     reducers: {
         setShowAlert: (state, action) => {
@@ -76,6 +76,6 @@ const registerLoginSlice = createSlice({
     }
 });
 
-export default registerLoginSlice.reducer;
+export default userSlice.reducer;
 
-export const {setShowAlert, setAlertText, setUser, setToken} = registerLoginSlice.actions;
+export const {setShowAlert, setAlertText, setUser, setToken} = userSlice.actions;
