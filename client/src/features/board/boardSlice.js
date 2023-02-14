@@ -1,7 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
-    isModalVisible: false,
+    isEditBoardModalVisible: false,
     activeBtn: 0,
     boards: ['platform launch', 'marketing plan', 'roadmap']
 }
@@ -10,11 +10,11 @@ const boardSlice = createSlice({
     name: 'boardSlice',
     initialState,
     reducers: {
-        showModal: (state) => {
-            state.isModalVisible = true;
+        showEditModal: (state) => {
+            state.isEditBoardModalVisible = true;
         },
-        closeModal: (state) => {
-            state.isModalVisible = false;
+        closeEditModal: (state) => {
+            state.isEditBoardModalVisible = false;
         },
         setIsActive: (state, action) => {
             state.activeBtn = action.payload;
@@ -24,4 +24,4 @@ const boardSlice = createSlice({
 
 export default boardSlice.reducer;
 
-export const {showModal, closeModal, setIsActive} = boardSlice.actions;
+export const {showEditModal, closeEditModal, setIsActive} = boardSlice.actions;
