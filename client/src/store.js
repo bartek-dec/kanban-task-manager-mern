@@ -1,5 +1,5 @@
 import {configureStore} from "@reduxjs/toolkit";
-import registerLoginSlice from "./features/registerLogin/registerLoginSlice";
+import userSlice from "./features/user/userSlice";
 import boardSlice from "./features/board/boardSlice";
 import themeSlice from "./features/theme/themeSlice";
 import sidebarSlice from "./features/sidebarSlice/sidebarSlice";
@@ -7,7 +7,7 @@ import logoutSlice from "./features/logoutSlice/logoutSlice";
 
 const store = configureStore({
     reducer: {
-        register: registerLoginSlice,
+        user: userSlice,
         board: boardSlice,
         theme: themeSlice,
         sidebar: sidebarSlice,

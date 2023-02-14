@@ -4,7 +4,7 @@ import {useSelector, useDispatch} from "react-redux";
 import {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import validator from "validator";
-import {setShowAlert, setAlertText, registerUser, loginUser} from "../features/registerLogin/registerLoginSlice";
+import {setShowAlert, setAlertText, registerUser, loginUser} from "../features/user/userSlice";
 
 const initialState = {
     name: '',
@@ -23,7 +23,7 @@ const Register = () => {
     const [values, setValues] = useState(initialState);
     const [errors, setErrors] = useState(inputErrors);
     const dispatch = useDispatch();
-    const {showAlert, isLoading, user} = useSelector((state) => state.register);
+    const {showAlert, isLoading, user} = useSelector((state) => state.user);
     const navigate = useNavigate();
 
     useEffect(() => {

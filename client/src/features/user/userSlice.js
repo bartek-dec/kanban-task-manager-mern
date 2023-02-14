@@ -1,5 +1,5 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {addUserToLocalStorage, getUserFromLocalStorage} from "../../utils/localStorage";
+import {addUserToLocalStorage, getUserFromLocalStorage, removeUserFromLocalStorage} from "../../utils/localStorage";
 import axios from "axios";
 
 const {user, token} = getUserFromLocalStorage();
@@ -9,7 +9,8 @@ const initialState = {
     showAlert: false,
     alertText: '',
     user: user || null,
-    token: token || null
+    token: token || null,
+    isUserModalVisible: false
 }
 
 export const registerUser = createAsyncThunk('registerUser', async (currentUser, thunkAPI) => {
@@ -28,10 +29,34 @@ export const loginUser = createAsyncThunk('loginUser', async (currentUser, thunk
     } catch (error) {
         return thunkAPI.rejectWithValue(error.response.data.msg);
     }
-})
+});
 
-const registerLoginSlice = createSlice({
-    name: 'registerLoginSlice',
+export const updateUser = createAsyncThunk('updateUser', async (currentUser, thunkAPI) => {
+    try {
+        const {data} = await axios.patch('/api/v1/auth/updateUser', currentUser, {
+            headers: {
+                Authorization: `Bearer ${thunkAPI.getState().user.token}`
+            }
+        });
+        return data;
+    } catch (error) {
+        if (error.response.status === 401) {
+            thunkAPI.dispatch(setShowAlert(true));
+            thunkAPI.dispatch(setAlertText('Unauthorized! Logging out...'));
+            setTimeout(() => {
+                thunkAPI.dispatch(setUser(null));
+                thunkAPI.dispatch(setToken(null));
+                thunkAPI.dispatch(setShowAlert(false));
+                thunkAPI.dispatch(setAlertText(''));
+                removeUserFromLocalStorage();
+            }, 2000);
+        }
+        return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+});
+
+const userSlice = createSlice({
+    name: 'userSlice',
     initialState,
     reducers: {
         setShowAlert: (state, action) => {
@@ -45,6 +70,12 @@ const registerLoginSlice = createSlice({
         },
         setToken: (state, action) => {
             state.token = action.payload;
+        },
+        showUserModal: (state) => {
+            state.isUserModalVisible = true;
+        },
+        closeUserModal: (state) => {
+            state.isUserModalVisible = false;
         }
     },
     extraReducers: (builder) => {
@@ -72,10 +103,23 @@ const registerLoginSlice = createSlice({
             state.isLoading = false;
             state.showAlert = true;
             state.alertText = action.payload;
+        }).addCase(updateUser.pending, (state) => {
+            state.isLoading = true;
+        }).addCase(updateUser.fulfilled, (state, action) => {
+            const {user, token} = action.payload;
+            state.isLoading = false;
+            state.user = user;
+            state.token = token;
+            state.isUserModalVisible = false;
+            addUserToLocalStorage({user, token});
+        }).addCase(updateUser.rejected, (state, action) => {
+            state.isLoading = false;
+            state.showAlert = true;
+            state.alertText = action.payload;
         })
     }
 });
 
-export default registerLoginSlice.reducer;
+export default userSlice.reducer;
 
-export const {setShowAlert, setAlertText, setUser, setToken} = registerLoginSlice.actions;
+export const {setShowAlert, setAlertText, setUser, setToken, showUserModal, closeUserModal} = userSlice.actions;

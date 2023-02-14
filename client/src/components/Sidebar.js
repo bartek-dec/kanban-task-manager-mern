@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {Logo, ToggleTheme, HideButton, ShowButton, UserButton, BoardsContainer} from '../components';
+import {Logo, ToggleTheme, HideButton, ShowButton, UserButton, BoardsContainer, UserModal} from '../components';
 import {useSelector} from "react-redux";
 
 const Sidebar = () => {
@@ -12,7 +12,9 @@ const Sidebar = () => {
                     <Logo/>
                 </div>
 
-                <BoardsContainer/>
+                <div className='boards-container'>
+                    <BoardsContainer/>
+                </div>
 
                 <div className='settings-container'>
                     <ToggleTheme/>
@@ -21,6 +23,7 @@ const Sidebar = () => {
                 </div>
                 <ShowButton/>
             </div>
+            <UserModal/>
         </Wrapper>
     );
 };
@@ -29,7 +32,7 @@ export default Sidebar;
 
 const Wrapper = styled.aside`
   .container {
-    width: 18rem;
+    width: var(--Sidebar-Width);
     height: 100vh;
     padding-right: 1.5rem;
     background-color: var(--Sidebar-Background-Color);
@@ -44,20 +47,10 @@ const Wrapper = styled.aside`
     align-items: center;
   }
 
-  //.boards-container {
-  //  width: 100%;
-  //  height: calc(100vh - (var(--Navbar-Height) + var(--Settings-Height)));
-  //}
-  //
-  //.boards-header {
-  //  text-transform: uppercase;
-  //  font-size: var(--font-size-13);
-  //  letter-spacing: 3px;
-  //  padding: 0.75rem;
-  //  padding-left: 2rem;
-  //  margin-bottom: 0.5rem;
-  //  color: var(--Medium-Grey);
-  //}
+  .boards-container {
+    width: 100%;
+    height: calc(100vh - (var(--Navbar-Height) + var(--Settings-Height)));
+  }
 
   .settings-container {
     height: var(--Settings-Height);

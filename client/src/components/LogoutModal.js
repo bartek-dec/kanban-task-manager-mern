@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import {useSelector, useDispatch} from "react-redux";
 import {closeModal} from "../features/logoutSlice/logoutSlice";
-import {setUser, setToken} from "../features/registerLogin/registerLoginSlice";
+import {setUser, setToken} from "../features/user/userSlice";
 import {removeUserFromLocalStorage} from "../utils/localStorage";
 
 const LogoutModal = () => {

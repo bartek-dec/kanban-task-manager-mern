@@ -47,10 +47,14 @@ const Wrapper = styled.div`
     text-align: left;
     border: none;
     background-color: transparent;
-
     color: var(--Red);
     font-weight: var(--font-weight-5);
     font-size: var(--font-size-18);
     cursor: pointer;
+    transition: transform 0.3s linear;
+  }
+  
+  button:hover{
+    transform: scale(1.1);
   }
 `;
