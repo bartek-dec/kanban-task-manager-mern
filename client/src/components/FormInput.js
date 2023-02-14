@@ -39,7 +39,7 @@ const Wrapper = styled.div`
   }
 
   input:hover {
-    outline: 2px solid var(--Main-Purple);
+    outline: 1px solid var(--Main-Purple);
   }
 
   input:focus {
