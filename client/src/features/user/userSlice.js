@@ -9,7 +9,8 @@ const initialState = {
     showAlert: false,
     alertText: '',
     user: user || null,
-    token: token || null
+    token: token || null,
+    isUserModalVisible: false
 }
 
 export const registerUser = createAsyncThunk('registerUser', async (currentUser, thunkAPI) => {
@@ -24,6 +25,19 @@ export const registerUser = createAsyncThunk('registerUser', async (currentUser,
 export const loginUser = createAsyncThunk('loginUser', async (currentUser, thunkAPI) => {
     try {
         const {data} = await axios.post('/api/v1/auth/login', currentUser);
+        return data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+});
+
+export const updateUser = createAsyncThunk('updateUser', async (currentUser, thunkAPI) => {
+    try {
+        const {data} = await axios.patch('/api/v1/auth/updateUser', currentUser, {
+            headers: {
+                Authorization: `Bearer ${thunkAPI.getState().user.token}`
+            }
+        });
         return data;
     } catch (error) {
         return thunkAPI.rejectWithValue(error.response.data.msg);
@@ -45,6 +59,12 @@ const userSlice = createSlice({
         },
         setToken: (state, action) => {
             state.token = action.payload;
+        },
+        showUserModal: (state) => {
+            state.isUserModalVisible = true;
+        },
+        closeUserModal: (state) => {
+            state.isUserModalVisible = false;
         }
     },
     extraReducers: (builder) => {
@@ -72,10 +92,23 @@ const userSlice = createSlice({
             state.isLoading = false;
             state.showAlert = true;
             state.alertText = action.payload;
+        }).addCase(updateUser.pending, (state) => {
+            state.isLoading = true;
+        }).addCase(updateUser.fulfilled, (state, action) => {
+            const {user, token} = action.payload;
+            state.isLoading = false;
+            state.user = user;
+            state.token = token;
+            state.isUserModalVisible = false;
+            addUserToLocalStorage({user, token});
+        }).addCase(updateUser.rejected, (state, action) => {
+            state.isLoading = false;
+            state.showAlert = true;
+            state.alertText = action.payload;
         })
     }
 });
 
 export default userSlice.reducer;
 
-export const {setShowAlert, setAlertText, setUser, setToken} = userSlice.actions;
+export const {setShowAlert, setAlertText, setUser, setToken, showUserModal, closeUserModal} = userSlice.actions;
