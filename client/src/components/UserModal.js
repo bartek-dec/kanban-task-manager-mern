@@ -93,13 +93,13 @@ const UserModal = () => {
                 {showAlert && <Alert/>}
 
                 <FormInputSmall type='text' error={errors.nameError} name='name' value={values.name}
-                                labelText='Name' handleChange={handleChange}/>
+                                labelText='Name' handleChange={handleChange} label={true}/>
 
                 <FormInputSmall type='text' error={errors.lastNameError} name='lastName' value={values.lastName}
-                                labelText='Last Name' handleChange={handleChange}/>
+                                labelText='Last Name' handleChange={handleChange} label={true}/>
 
                 <FormInputSmall type='email' error={errors.emailError} name='email' value={values.email}
-                                labelText='Email' handleChange={handleChange}/>
+                                labelText='Email' handleChange={handleChange} label={true}/>
 
                 <button disabled={isLoading} type='submit' className='btn update-btn'>Update User</button>
             </form>
@@ -151,11 +151,5 @@ const Wrapper = styled.div`
   .update-btn:disabled {
     background-color: var(--Main-Purple-Hover-2);
     cursor: auto;
-  }
-
-  p {
-    margin-top: 1rem;
-    font-size: var(--font-size-13);
-    color: var(--Red);
   }
 `;
