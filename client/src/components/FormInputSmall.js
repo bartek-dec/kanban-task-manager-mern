@@ -1,11 +1,12 @@
 import styled from "styled-components";
 
-const FormInputSmall = ({type, error, name, labelText, value, handleChange}) => {
+const FormInputSmall = ({type, error, name, labelText, value, handleChange, label, placeholder}) => {
     return (
         <Wrapper>
-            <label htmlFor={name}>{labelText ? labelText : name}</label>
+            {label && <label htmlFor={name}>{labelText ? labelText : name}</label>}
+
             <input type={type} name={name} value={value} onChange={handleChange}
-                   className={error ? 'input error' : 'input'}/>
+                   className={error ? 'input error' : 'input'} placeholder={placeholder}/>
         </Wrapper>
     );
 };
@@ -21,13 +22,13 @@ const Wrapper = styled.div`
     margin-bottom: 0.5rem;
     text-transform: capitalize;
     font-size: var(--font-size-13);
-    font-weight: var(--font-weight-7);
-    color: var(--Medium-Grey);
+    font-weight: var(--font-weight-5);
+    color: var(--Main-Text-Color);
   }
 
   .input {
     width: 100%;
-    padding: 0.5rem 1rem;
+    padding: 0.65rem 1rem;
     font-size: var(--font-size-13);
     background-color: var(--Form-Background-Color);
     color: var(--Main-Text-Color);
