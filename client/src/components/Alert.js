@@ -3,10 +3,11 @@ import {useSelector} from "react-redux";
 
 const Alert = () => {
     const {alertText} = useSelector((state) => state.user);
+    const {boardAlertText} = useSelector((state) => state.board);
 
     return (
         <Wrapper>
-            <h3 className='alert'>{alertText}</h3>
+            <h3 className='alert'>{alertText || boardAlertText}</h3>
         </Wrapper>
     );
 };
