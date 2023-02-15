@@ -3,12 +3,14 @@ import {TbLayoutBoardSplit} from 'react-icons/tb';
 import {HiPlusSm} from 'react-icons/hi';
 import {useDispatch} from "react-redux";
 import {showCreateModal} from "../features/board/boardSlice";
+import {closeSidebarModal} from "../features/sidebarSlice/sidebarSlice";
 
 const CreateBoardButton = () => {
     const dispatch = useDispatch();
 
     const handleClick = () => {
         dispatch(showCreateModal());
+        dispatch(closeSidebarModal());
     }
 
     return (
