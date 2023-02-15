@@ -1,14 +1,22 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 
 const initialState = {
     isEditBoardModalVisible: false,
     isCreateBoardModalVisible: false,
     showAlert: false,
     isLoading: false,
-    alertText: '',
+    boardAlertText: '',
     activeBtn: 0,
     boards: ['platform launch', 'marketing plan', 'roadmap']
 }
+
+export const createBoard = createAsyncThunk('createBoard', async (payload, thunkAPI) => {
+    try {
+        console.log(payload);
+    } catch (error) {
+
+    }
+});
 
 const boardSlice = createSlice({
     name: 'boardSlice',
@@ -29,11 +37,11 @@ const boardSlice = createSlice({
         setIsActive: (state, action) => {
             state.activeBtn = action.payload;
         },
-        setAlert: (state, action) => {
+        setShowAlert: (state, action) => {
             state.showAlert = action.payload;
         },
         setAlertText: (state, action) => {
-            state.alertText = action.payload;
+            state.boardAlertText = action.payload;
         },
 
     }
@@ -41,4 +49,12 @@ const boardSlice = createSlice({
 
 export default boardSlice.reducer;
 
-export const {showEditModal, closeEditModal, showCreateModal, closeCreateModal, setIsActive} = boardSlice.actions;
+export const {
+    showEditModal,
+    closeEditModal,
+    showCreateModal,
+    closeCreateModal,
+    setIsActive,
+    setShowAlert,
+    setAlertText
+} = boardSlice.actions;

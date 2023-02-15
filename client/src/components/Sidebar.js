@@ -1,5 +1,14 @@
 import styled from "styled-components";
-import {Logo, ToggleTheme, HideButton, ShowButton, UserButton, BoardsContainer, UserModal} from '../components';
+import {
+    Logo,
+    ToggleTheme,
+    HideButton,
+    ShowButton,
+    UserButton,
+    BoardsContainer,
+    UserModal,
+    CreateBoardModal
+} from '../components';
 import {useSelector} from "react-redux";
 
 const Sidebar = () => {
@@ -24,6 +33,7 @@ const Sidebar = () => {
                 <ShowButton/>
             </div>
             <UserModal/>
+            <CreateBoardModal/>
         </Wrapper>
     );
 };
