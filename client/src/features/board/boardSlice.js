@@ -1,4 +1,7 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
+import axios from "axios";
+import {removeUserFromLocalStorage} from "../../utils/localStorage";
+import {setToken, setUser} from "../user/userSlice";
 
 const initialState = {
     isEditBoardModalVisible: false,
@@ -7,14 +10,54 @@ const initialState = {
     isLoading: false,
     boardAlertText: '',
     activeBtn: 0,
-    boards: ['platform launch', 'marketing plan', 'roadmap']
+    boards: []
 }
 
 export const createBoard = createAsyncThunk('createBoard', async (payload, thunkAPI) => {
     try {
-        console.log(payload);
+        const {data} = await axios.post('/api/v1/boards', payload, {
+            headers: {
+                Authorization: `Bearer ${thunkAPI.getState().user.token}`
+            }
+        });
+        return data;
     } catch (error) {
+        if (error.response.status === 401) {
+            thunkAPI.dispatch(setShowAlert(true));
+            thunkAPI.dispatch(setAlertText('Unauthorized! Logging out...'));
+            setTimeout(() => {
+                thunkAPI.dispatch(setUser(null));
+                thunkAPI.dispatch(setToken(null));
+                thunkAPI.dispatch(setShowAlert(false));
+                thunkAPI.dispatch(setAlertText(''));
+                removeUserFromLocalStorage();
+            }, 2000);
+        }
+        return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+});
 
+export const getBoards = createAsyncThunk('getBoards', async (_, thunkAPI) => {
+    try {
+        const {data} = await axios.get('/api/v1/boards', {
+            headers: {
+                Authorization: `Bearer ${thunkAPI.getState().user.token}`
+            }
+        });
+        return data;
+    } catch (error) {
+        if (error.response.status === 401) {
+            thunkAPI.dispatch(setShowAlert(true));
+            thunkAPI.dispatch(setAlertText('Unauthorized! Logging out...'));
+            setTimeout(() => {
+                thunkAPI.dispatch(setUser(null));
+                thunkAPI.dispatch(setToken(null));
+                thunkAPI.dispatch(setShowAlert(false));
+                thunkAPI.dispatch(setAlertText(''));
+                removeUserFromLocalStorage();
+            }, 2000);
+        }
+        return thunkAPI.rejectWithValue(error.response.data.msg);
     }
 });
 
@@ -43,7 +86,27 @@ const boardSlice = createSlice({
         setAlertText: (state, action) => {
             state.boardAlertText = action.payload;
         },
-
+    },
+    extraReducers: (builder) => {
+        builder.addCase(createBoard.pending, (state) => {
+            state.isLoading = true;
+        }).addCase(createBoard.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.boards = [...state.boards, action.payload.board];
+        }).addCase(createBoard.rejected, (state, action) => {
+            state.isLoading = false;
+            state.showAlert = true;
+            state.boardAlertText = action.payload;
+        }).addCase(getBoards.pending, (state) => {
+            state.isLoading = true;
+        }).addCase(getBoards.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.boards = action.payload.boards;
+        }).addCase(getBoards.rejected, (state, action) => {
+            state.isLoading = false;
+            state.showAlert = true;
+            state.boardAlertText = action.payload;
+        })
     }
 });
 

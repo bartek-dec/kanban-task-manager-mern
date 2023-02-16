@@ -7,8 +7,7 @@ import {showSidebarModal} from "../features/sidebarSlice/sidebarSlice";
 const Navbar = () => {
     const {activeBtn, boards} = useSelector((state) => state.board);
     const dispatch = useDispatch();
-    const boardTitle = boards[activeBtn];
-
+    const boardTitle = boards[activeBtn]?.name;
     const handleClick = () => {
         dispatch(showSidebarModal());
     }
