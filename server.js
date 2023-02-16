@@ -8,6 +8,7 @@ import morgan from 'morgan';
 import notFoundMiddleware from "./middleware/notFound.js";
 import errorHandlerMiddleware from "./middleware/errorHandler.js";
 import authRouter from "./routes/authRouter.js";
+import boardRouter from "./routes/boardRouter.js";
 
 const app = express();
 app.use(express.json());
@@ -17,13 +18,9 @@ if (process.env.NODE_ENV !== 'production') {
     app.use(morgan('dev'));
 }
 
-//fake home route
-app.get('/', (req, res) => {
-    res.send('welcone');
-});
-
 // routes
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/boards', boardRouter);
 
 // catch errors
 app.use(notFoundMiddleware);
