@@ -1,6 +1,7 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import {addUserToLocalStorage, getUserFromLocalStorage, removeUserFromLocalStorage} from "../../utils/localStorage";
 import axios from "axios";
+import {authFetch, checkForUnAuthorizedError} from "../../utils/axios";
 
 const {user, token} = getUserFromLocalStorage();
 
@@ -33,25 +34,10 @@ export const loginUser = createAsyncThunk('loginUser', async (currentUser, thunk
 
 export const updateUser = createAsyncThunk('updateUser', async (currentUser, thunkAPI) => {
     try {
-        const {data} = await axios.patch('/api/v1/auth/updateUser', currentUser, {
-            headers: {
-                Authorization: `Bearer ${thunkAPI.getState().user.token}`
-            }
-        });
+        const {data} = await authFetch.patch('/auth/updateUser', currentUser);
         return data;
     } catch (error) {
-        if (error.response.status === 401) {
-            thunkAPI.dispatch(setShowAlert(true));
-            thunkAPI.dispatch(setAlertText('Unauthorized! Logging out...'));
-            setTimeout(() => {
-                thunkAPI.dispatch(setUser(null));
-                thunkAPI.dispatch(setToken(null));
-                thunkAPI.dispatch(setShowAlert(false));
-                thunkAPI.dispatch(setAlertText(''));
-                removeUserFromLocalStorage();
-            }, 2000);
-        }
-        return thunkAPI.rejectWithValue(error.response.data.msg);
+        return checkForUnAuthorizedError(error, thunkAPI);
     }
 });
 
