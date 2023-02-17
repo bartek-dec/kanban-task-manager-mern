@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import {Alert, FormInputSmall} from "./index";
-import {closeCreateModal, setShowAlert, setAlertText, createBoard} from "../features/board/boardSlice";
+import {closeCreateModal, createBoard} from "../features/board/boardSlice";
+import {setShowAlert, setAlertText} from "../features/alert/alertSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {useState, useEffect} from "react";
 import {HiPlusSm} from 'react-icons/hi';
@@ -19,7 +20,8 @@ initialIDs.forEach((id) => {
 
 const CreateBoardModal = () => {
     const dispatch = useDispatch();
-    const {isCreateBoardModalVisible, showAlert, isLoading} = useSelector((state) => state.board);
+    const {isCreateBoardModalVisible, isLoading} = useSelector((state) => state.board);
+    const {showAlert} = useSelector((state) => state.alert);
 
     const [name, setName] = useState('');
     const [nameError, setNameError] = useState(false);
@@ -134,7 +136,7 @@ const CreateBoardModal = () => {
         }
 
         dispatch(createBoard({name, columns: Object.values(values)}));
-        dispatch(closeCreateModal());
+        //dispatch(closeCreateModal());
         resetLocalState();
     }
 
