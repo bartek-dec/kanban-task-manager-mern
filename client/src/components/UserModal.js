@@ -45,6 +45,11 @@ const UserModal = () => {
     const handleModalClick = (e) => {
         if (e.target.classList.contains('modal')) {
             dispatch(closeUserModal());
+            setValues({
+                name: user?.name || '',
+                lastName: user?.lastName || '',
+                email: user?.email || ''
+            });
         }
     }
 
