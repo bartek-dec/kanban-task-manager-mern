@@ -2,7 +2,8 @@ import styled from "styled-components";
 import {Alert, FormInputSmall} from "./index";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {setAlertText, setShowAlert, closeUserModal} from "../features/user/userSlice";
+import {closeUserModal} from "../features/user/userSlice";
+import {setShowAlert, setAlertText} from "../features/alert/alertSlice";
 import validator from "validator";
 import {updateUser} from "../features/user/userSlice";
 
@@ -14,7 +15,8 @@ const inputErrors = {
 }
 
 const UserModal = () => {
-    const {showAlert, isLoading, user, isUserModalVisible} = useSelector((state) => state.user);
+    const {isLoading, user, isUserModalVisible} = useSelector((state) => state.user);
+    const {showAlert} = useSelector((state) => state.alert);
     const [values, setValues] = useState({
         name: user?.name || '',
         lastName: user?.lastName || '',

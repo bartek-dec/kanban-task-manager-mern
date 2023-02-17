@@ -7,8 +7,6 @@ const {user, token} = getUserFromLocalStorage();
 
 const initialState = {
     isLoading: false,
-    showAlert: false,
-    alertText: '',
     user: user || null,
     token: token || null,
     isUserModalVisible: false
@@ -37,7 +35,7 @@ export const updateUser = createAsyncThunk('updateUser', async (currentUser, thu
         const {data} = await authFetch.patch('/auth/updateUser', currentUser);
         return data;
     } catch (error) {
-        return checkForUnAuthorizedError(error, thunkAPI);
+        return checkForUnAuthorizedError(error, thunkAPI, closeUserModal);
     }
 });
 
@@ -45,12 +43,6 @@ const userSlice = createSlice({
     name: 'userSlice',
     initialState,
     reducers: {
-        setShowAlert: (state, action) => {
-            state.showAlert = action.payload;
-        },
-        setAlertText: (state, action) => {
-            state.alertText = action.payload;
-        },
         setUser: (state, action) => {
             state.user = action.payload;
         },
@@ -73,10 +65,8 @@ const userSlice = createSlice({
             state.token = token;
             state.isLoading = false;
             addUserToLocalStorage({user, token});
-        }).addCase(registerUser.rejected, (state, action) => {
+        }).addCase(registerUser.rejected, (state) => {
             state.isLoading = false;
-            state.showAlert = true;
-            state.alertText = action.payload;
         }).addCase(loginUser.pending, (state) => {
             state.isLoading = true;
         }).addCase(loginUser.fulfilled, (state, action) => {
@@ -85,10 +75,8 @@ const userSlice = createSlice({
             state.token = token;
             state.isLoading = false;
             addUserToLocalStorage({user, token});
-        }).addCase(loginUser.rejected, (state, action) => {
+        }).addCase(loginUser.rejected, (state) => {
             state.isLoading = false;
-            state.showAlert = true;
-            state.alertText = action.payload;
         }).addCase(updateUser.pending, (state) => {
             state.isLoading = true;
         }).addCase(updateUser.fulfilled, (state, action) => {
@@ -98,14 +86,12 @@ const userSlice = createSlice({
             state.token = token;
             state.isUserModalVisible = false;
             addUserToLocalStorage({user, token});
-        }).addCase(updateUser.rejected, (state, action) => {
+        }).addCase(updateUser.rejected, (state) => {
             state.isLoading = false;
-            state.showAlert = true;
-            state.alertText = action.payload;
         })
     }
 });
 
 export default userSlice.reducer;
 
-export const {setShowAlert, setAlertText, setUser, setToken, showUserModal, closeUserModal} = userSlice.actions;
+export const {setUser, setToken, showUserModal, closeUserModal} = userSlice.actions;
