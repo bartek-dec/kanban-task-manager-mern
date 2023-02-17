@@ -136,7 +136,6 @@ const CreateBoardModal = () => {
         }
 
         dispatch(createBoard({name, columns: Object.values(values)}));
-        //dispatch(closeCreateModal());
         resetLocalState();
     }
 
