@@ -2,7 +2,7 @@ import styled from "styled-components";
 import {useSelector, useDispatch} from "react-redux";
 import {BoardListItem, CreateBoardButton} from "./index";
 import {useEffect} from "react";
-import {getBoards, setCurrentBoardName, setActiveBoard} from "../features/board/boardSlice";
+import {getBoards, setActiveBoard} from "../features/board/boardSlice";
 import {useNavigate} from "react-router-dom";
 
 const BoardsContainer = () => {
@@ -17,10 +17,12 @@ const BoardsContainer = () => {
     useEffect(() => {
         // set active board
         if (activeBoard) {
-            navigate(`/${activeBoard}`);
+            console.log('active board')
+            console.log(activeBoard);
+            navigate(`/${activeBoard._id}`);
         } else if (!activeBoard && boards.length > 0) {
+            console.log('no active board')
             const {_id: id, name} = boards[0];
-            dispatch(setCurrentBoardName(name));
             dispatch(setActiveBoard(id));
             navigate(`/${id}`);
         }

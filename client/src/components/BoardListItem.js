@@ -1,13 +1,12 @@
 import {TbLayoutBoardSplit} from 'react-icons/tb';
 import {useDispatch} from "react-redux";
-import {setCurrentBoardName, setActiveBoard} from "../features/board/boardSlice";
+import {setActiveBoard} from "../features/board/boardSlice";
 import {NavLink} from "react-router-dom";
 
 const BoardListItem = ({title, id}) => {
     const dispatch = useDispatch();
 
     const handleClick = () => {
-        dispatch(setCurrentBoardName(title));
         dispatch(setActiveBoard(id));
     }
 

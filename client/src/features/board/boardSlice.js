@@ -6,7 +6,7 @@ const initialState = {
     isCreateBoardModalVisible: false,
     isDeleteBoardModalVisible: false,
     isLoading: false,
-    activeBoard: '',
+    activeBoard: null,
     currentBoardName: '',
     boards: []
 }
@@ -61,11 +61,9 @@ const boardSlice = createSlice({
             state.isDeleteBoardModalVisible = false;
         },
         setActiveBoard: (state, action) => {
-            state.activeBoard = action.payload;
+            const [board] = state.boards.filter((board) => board._id === action.payload);
+            state.activeBoard = board;
         },
-        setCurrentBoardName: (state, action) => {
-            state.currentBoardName = action.payload;
-        }
     },
     extraReducers: (builder) => {
         builder.addCase(createBoard.pending, (state) => {
@@ -76,7 +74,9 @@ const boardSlice = createSlice({
             state.boards = [...state.boards, action.payload.board];
         }).addCase(createBoard.rejected, (state) => {
             state.isLoading = false;
-            state.isCreateBoardModalVisible = false;
+            setTimeout(() => {
+                state.isCreateBoardModalVisible = false;
+            }, 2000);
         }).addCase(getBoards.pending, (state) => {
             state.isLoading = true;
         }).addCase(getBoards.fulfilled, (state, action) => {
@@ -88,11 +88,13 @@ const boardSlice = createSlice({
             state.isLoading = true;
         }).addCase(deleteBoard.fulfilled, (state) => {
             state.isLoading = false;
-            state.activeBoard = '';
+            state.activeBoard = null;
             state.isDeleteBoardModalVisible = false;
         }).addCase(deleteBoard.rejected, (state) => {
             state.isLoading = false;
-            state.isDeleteBoardModalVisible = false;
+            setTimeout(() => {
+                state.isDeleteBoardModalVisible = false;
+            }, 2000);
         })
     }
 });
@@ -107,5 +109,4 @@ export const {
     showDeleteModal,
     closeDeleteModal,
     setActiveBoard,
-    setCurrentBoardName
 } = boardSlice.actions;
