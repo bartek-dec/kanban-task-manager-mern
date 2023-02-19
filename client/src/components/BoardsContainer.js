@@ -1,15 +1,36 @@
 import styled from "styled-components";
-import {useSelector} from "react-redux";
+import {useSelector, useDispatch} from "react-redux";
 import {BoardListItem, CreateBoardButton} from "./index";
+import {useEffect} from "react";
+import {getBoards, setActiveBoard} from "../features/board/boardSlice";
+import {useNavigate} from "react-router-dom";
 
 const BoardsContainer = () => {
-    const {boards} = useSelector((state) => state.board);
+    const {boards, activeBoard} = useSelector((state) => state.board);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        dispatch(getBoards());
+    }, []);
+
+    useEffect(() => {
+        // set active board
+        if (activeBoard) {
+            navigate(`/${activeBoard._id}`);
+        } else if (!activeBoard && boards.length > 0) {
+            const {_id: id} = boards[0];
+            dispatch(setActiveBoard(id));
+            navigate(`/${id}`);
+        }
+    }, [boards]);
 
     return (
         <Wrapper>
-            <h4 className='boards-header'>all boards (3)</h4>
+            <h4 className='boards-header'>all boards ({boards.length})</h4>
             {boards.map((item, index) => {
-                return <BoardListItem key={index} id={index} title={item}/>
+                const {name, _id: id} = item;
+                return <BoardListItem key={index} id={id} title={name}/>
             })}
             <CreateBoardButton/>
         </Wrapper>
@@ -20,7 +41,7 @@ export default BoardsContainer;
 
 const Wrapper = styled.div`
   width: 100%;
-  
+
   .boards-header {
     text-transform: uppercase;
     font-size: var(--font-size-13);

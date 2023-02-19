@@ -2,7 +2,8 @@ import styled from "styled-components";
 import {Alert, FormInputSmall} from "./index";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {setAlertText, setShowAlert, closeUserModal} from "../features/user/userSlice";
+import {closeUserModal} from "../features/user/userSlice";
+import {setShowAlert, setAlertText} from "../features/alert/alertSlice";
 import validator from "validator";
 import {updateUser} from "../features/user/userSlice";
 
@@ -14,7 +15,8 @@ const inputErrors = {
 }
 
 const UserModal = () => {
-    const {showAlert, isLoading, user, isUserModalVisible} = useSelector((state) => state.user);
+    const {isLoading, user, isUserModalVisible} = useSelector((state) => state.user);
+    const {showAlert} = useSelector((state) => state.alert);
     const [values, setValues] = useState({
         name: user?.name || '',
         lastName: user?.lastName || '',
@@ -43,6 +45,11 @@ const UserModal = () => {
     const handleModalClick = (e) => {
         if (e.target.classList.contains('modal')) {
             dispatch(closeUserModal());
+            setValues({
+                name: user?.name || '',
+                lastName: user?.lastName || '',
+                email: user?.email || ''
+            });
         }
     }
 
@@ -93,13 +100,13 @@ const UserModal = () => {
                 {showAlert && <Alert/>}
 
                 <FormInputSmall type='text' error={errors.nameError} name='name' value={values.name}
-                                labelText='Name' handleChange={handleChange}/>
+                                labelText='Name' handleChange={handleChange} label={true}/>
 
                 <FormInputSmall type='text' error={errors.lastNameError} name='lastName' value={values.lastName}
-                                labelText='Last Name' handleChange={handleChange}/>
+                                labelText='Last Name' handleChange={handleChange} label={true}/>
 
                 <FormInputSmall type='email' error={errors.emailError} name='email' value={values.email}
-                                labelText='Email' handleChange={handleChange}/>
+                                labelText='Email' handleChange={handleChange} label={true}/>
 
                 <button disabled={isLoading} type='submit' className='btn update-btn'>Update User</button>
             </form>
@@ -151,11 +158,5 @@ const Wrapper = styled.div`
   .update-btn:disabled {
     background-color: var(--Main-Purple-Hover-2);
     cursor: auto;
-  }
-
-  p {
-    margin-top: 1rem;
-    font-size: var(--font-size-13);
-    color: var(--Red);
   }
 `;

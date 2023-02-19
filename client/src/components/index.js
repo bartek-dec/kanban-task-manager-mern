@@ -18,6 +18,8 @@ import BoardsContainer from "./BoardsContainer";
 import SidebarModal from "./SidebarModal";
 import UserModal from "./UserModal";
 import FormInputSmall from "./FormInputSmall";
+import CreateBoardModal from "./CreateBoardModal";
+import DeleteBoardModal from "./DeleteBoardModal";
 
 export {
     Logo,
@@ -39,5 +41,7 @@ export {
     BoardsContainer,
     SidebarModal,
     UserModal,
-    FormInputSmall
+    FormInputSmall,
+    CreateBoardModal,
+    DeleteBoardModal
 }

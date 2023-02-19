@@ -1,30 +1,23 @@
-import styled from "styled-components";
 import {TbLayoutBoardSplit} from 'react-icons/tb';
-import {useSelector, useDispatch} from "react-redux";
-import {setIsActive} from "../features/board/boardSlice";
+import {useDispatch} from "react-redux";
+import {setActiveBoard} from "../features/board/boardSlice";
+import {NavLink} from "react-router-dom";
 
 const BoardListItem = ({title, id}) => {
-    const {activeBtn} = useSelector((state) => state.board);
     const dispatch = useDispatch();
 
-    const handleClick = (e) => {
-        const btnId = Number(e.currentTarget.dataset.id);
-        dispatch(setIsActive(btnId));
+    const handleClick = () => {
+        dispatch(setActiveBoard(id));
     }
 
     return (
-        <Wrapper data-id={id} type='button' className={activeBtn === id ? 'board-btn active' : 'board-btn'}
-                 onClick={handleClick}>
+        <NavLink to={`/${id}`} className={({isActive}) => {
+            return isActive ? 'board-btn active' : 'board-btn'
+        }} onClick={handleClick}>
             <TbLayoutBoardSplit className='icon-img'/>
             <h4>{title}</h4>
-        </Wrapper>
+        </NavLink>
     );
 };
 
 export default BoardListItem;
-
-const Wrapper = styled.button`
-  .board-btn:hover .icon-img {
-    color: var(--Main-Purple);
-  }
-`;

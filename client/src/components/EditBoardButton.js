@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import {BsDot} from 'react-icons/bs';
 import {useDispatch} from "react-redux";
-import {showModal} from "../features/board/boardSlice";
+import {showEditModal} from "../features/board/boardSlice";
 
 const EditBoardButton = () => {
     const dispatch = useDispatch();
 
     const handleClick = () => {
-        dispatch(showModal());
+        dispatch(showEditModal());
     }
 
     return (

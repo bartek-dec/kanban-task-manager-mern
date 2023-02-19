@@ -2,7 +2,7 @@ import styled from "styled-components";
 import {useSelector} from "react-redux";
 
 const Alert = () => {
-    const {alertText} = useSelector((state) => state.user);
+    const {alertText} = useSelector((state) => state.alert);
 
     return (
         <Wrapper>
