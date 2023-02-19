@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {useDispatch, useSelector} from "react-redux";
-import {closeEditModal} from "../features/board/boardSlice";
+import {closeEditModal, showDeleteModal} from "../features/board/boardSlice";
 
 const EditBoardModal = () => {
     const {isEditBoardModalVisible} = useSelector((state) => state.board);
@@ -12,11 +12,16 @@ const EditBoardModal = () => {
         }
     }
 
+    const handleDelete = () => {
+        dispatch(closeEditModal());
+        dispatch(showDeleteModal());
+    }
+
     return (
         <Wrapper className={isEditBoardModalVisible ? 'modal show-modal' : 'modal'} onClick={handleModalClick}>
             <div>
                 <button type='button' className='edit'>Edit Board</button>
-                <button type='button'>Delete Board</button>
+                <button type='button' onClick={handleDelete}>Delete Board</button>
             </div>
         </Wrapper>
     );
@@ -53,8 +58,8 @@ const Wrapper = styled.div`
     cursor: pointer;
     transition: transform 0.3s linear;
   }
-  
-  button:hover{
+
+  button:hover {
     transform: scale(1.1);
   }
 `;
