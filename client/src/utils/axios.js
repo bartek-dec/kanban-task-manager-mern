@@ -17,7 +17,7 @@ authFetch.interceptors.request.use((config) => {
     return Promise.reject(error);
 });
 
-export const checkForUnAuthorizedError = (error, thunkAPI, modalCallBack) => {
+export const checkForUnAuthorizedError = (error, thunkAPI) => {
     if (error.response.status === 401) {
         thunkAPI.dispatch(setShowAlert(true));
         thunkAPI.dispatch(setAlertText('Unauthorized! Logging out...'));
@@ -26,9 +26,6 @@ export const checkForUnAuthorizedError = (error, thunkAPI, modalCallBack) => {
             thunkAPI.dispatch(setToken(null));
             thunkAPI.dispatch(setShowAlert(false));
             thunkAPI.dispatch(setAlertText(''));
-            if (modalCallBack) {
-                thunkAPI.dispatch(modalCallBack());
-            }
             removeUserFromLocalStorage();
         }, 2000);
     }
