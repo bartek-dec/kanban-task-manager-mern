@@ -31,7 +31,6 @@ export const checkForUnAuthorizedError = (error, thunkAPI, modalCallBack) => {
             }
             removeUserFromLocalStorage();
         }, 2000);
-        return thunkAPI.rejectWithValue(false);
     }
     return thunkAPI.rejectWithValue(error.response.data.msg);
 }
