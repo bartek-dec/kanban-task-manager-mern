@@ -1,6 +1,7 @@
 import Board from "../models/Board.js";
 import {StatusCodes} from "http-status-codes";
 import {BadRequestError, NotFoundError} from "../errors/index.js";
+import {checkPermissions} from "../utils/checkPermissions.js";
 
 export const createBoard = async (req, res) => {
     const {name} = req.body;
@@ -24,5 +25,15 @@ export const updateBoard = async (req, res) => {
 }
 
 export const deleteBoard = async (req, res) => {
-    return res.send('delete board');
+    const {id: boardId} = req.params;
+
+    const board = await Board.findOne({_id: boardId});
+    if (!board) {
+        throw new NotFoundError(`No board with id ${boardId}`);
+    }
+
+    checkPermissions(req.user, board.createdBy);
+    await board.remove();
+
+    return res.status(StatusCodes.OK).json({msg: 'Success! Board removed'});
 }
