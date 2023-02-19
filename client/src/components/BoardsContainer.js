@@ -17,11 +17,8 @@ const BoardsContainer = () => {
     useEffect(() => {
         // set active board
         if (activeBoard) {
-            console.log('active board')
-            console.log(activeBoard);
             navigate(`/${activeBoard._id}`);
         } else if (!activeBoard && boards.length > 0) {
-            console.log('no active board')
             const {_id: id, name} = boards[0];
             dispatch(setActiveBoard(id));
             navigate(`/${id}`);
