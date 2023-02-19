@@ -13,9 +13,8 @@
     --Lines-Dark: #3E3F4E;
     --Medium-Grey: #828FA3;
     --Light-Grey-Light-BG: #F4F7FD;
-    --Lines-Light: #E4EBFA;
+    --Light-Gray: #E4EBFA;
     /* Loss: 1.6 */
-    --Medium-Grey-To-Red-Filter-Color: invert(35%) sepia(41%) saturate(1802%) hue-rotate(324deg) brightness(111%) contrast(84%);
     --Red: #EA5555;
     --Red-Hover: #FF9898;
     --White: #FFFFFF;
@@ -137,6 +136,10 @@ img {
     stroke-width: 1;
 }
 
+.board-btn:hover .icon-img {
+    color: var(--Main-Purple);
+}
+
 .board-btn {
     border: none;
     width: 100%;
@@ -144,6 +147,7 @@ img {
     padding: 0.85rem;
     padding-left: 2rem;
     text-transform: capitalize;
+    text-decoration: none;
     font-size: var(--font-size-15);
     border-top-right-radius: var(--border-radius-24);
     border-bottom-right-radius: var(--border-radius-24);
