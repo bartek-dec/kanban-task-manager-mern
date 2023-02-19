@@ -19,7 +19,7 @@ const BoardsContainer = () => {
         if (activeBoard) {
             navigate(`/${activeBoard._id}`);
         } else if (!activeBoard && boards.length > 0) {
-            const {_id: id, name} = boards[0];
+            const {_id: id} = boards[0];
             dispatch(setActiveBoard(id));
             navigate(`/${id}`);
         }
