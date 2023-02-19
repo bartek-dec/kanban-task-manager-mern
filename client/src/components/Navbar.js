@@ -1,20 +1,28 @@
 import styled from "styled-components";
 import {useSelector, useDispatch} from "react-redux";
-import {AddTaskButton, EditBoardButton, LogoutButton, LogoutModal, EditBoardModal, SidebarModal} from "./index";
+import {
+    AddTaskButton,
+    EditBoardButton,
+    LogoutButton,
+    LogoutModal,
+    EditBoardModal,
+    SidebarModal,
+    DeleteBoardModal
+} from "./index";
 import {IoIosArrowDown} from 'react-icons/io';
 import {showSidebarModal} from "../features/sidebarSlice/sidebarSlice";
 
 const Navbar = () => {
-    const {activeBtn, boards} = useSelector((state) => state.board);
+    const {currentBoardName} = useSelector((state) => state.board);
     const dispatch = useDispatch();
-    const boardTitle = boards[activeBtn]?.name;
+
     const handleClick = () => {
         dispatch(showSidebarModal());
     }
 
     return (
         <Wrapper>
-            <h2>{boardTitle}
+            <h2>{currentBoardName}
                 <button className='arrow-btn' onClick={handleClick}>
                     <IoIosArrowDown className='arrow'/>
                 </button>
@@ -26,6 +34,7 @@ const Navbar = () => {
             </div>
             <LogoutModal/>
             <EditBoardModal/>
+            <DeleteBoardModal/>
             <SidebarModal/>
         </Wrapper>
     );
