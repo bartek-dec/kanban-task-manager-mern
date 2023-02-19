@@ -19,6 +19,7 @@ import SidebarModal from "./SidebarModal";
 import UserModal from "./UserModal";
 import FormInputSmall from "./FormInputSmall";
 import CreateBoardModal from "./CreateBoardModal";
+import DeleteBoardModal from "./DeleteBoardModal";
 
 export {
     Logo,
@@ -41,5 +42,6 @@ export {
     SidebarModal,
     UserModal,
     FormInputSmall,
-    CreateBoardModal
+    CreateBoardModal,
+    DeleteBoardModal
 }
