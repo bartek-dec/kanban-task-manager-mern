@@ -46,12 +46,6 @@ const boardSlice = createSlice({
         setIsActive: (state, action) => {
             state.activeBtn = action.payload;
         },
-        // setShowAlert: (state, action) => {
-        //     state.showAlert = action.payload;
-        // },
-        // setAlertText: (state, action) => {
-        //     state.boardAlertText = action.payload;
-        // },
     },
     extraReducers: (builder) => {
         builder.addCase(createBoard.pending, (state) => {
@@ -59,19 +53,15 @@ const boardSlice = createSlice({
         }).addCase(createBoard.fulfilled, (state, action) => {
             state.isLoading = false;
             state.boards = [...state.boards, action.payload.board];
-        }).addCase(createBoard.rejected, (state, action) => {
+        }).addCase(createBoard.rejected, (state) => {
             state.isLoading = false;
-            // state.showAlert = true;
-            // state.boardAlertText = action.payload;
         }).addCase(getBoards.pending, (state) => {
             state.isLoading = true;
         }).addCase(getBoards.fulfilled, (state, action) => {
             state.isLoading = false;
             state.boards = action.payload.boards;
-        }).addCase(getBoards.rejected, (state, action) => {
+        }).addCase(getBoards.rejected, (state) => {
             state.isLoading = false;
-            // state.showAlert = true;
-            // state.boardAlertText = action.payload;
         })
     }
 });
@@ -84,6 +74,4 @@ export const {
     showCreateModal,
     closeCreateModal,
     setIsActive,
-    // setShowAlert,
-    // setAlertText
 } = boardSlice.actions;
