@@ -1,7 +1,6 @@
 import axios from "axios";
 import {getUserFromLocalStorage, removeUserFromLocalStorage} from "./localStorage";
 import {setToken, setUser} from "../features/user/userSlice";
-import {setShowAlert, setAlertText} from "../features/alert/alertSlice";
 
 export const authFetch = axios.create({
     baseURL: '/api/v1',
@@ -17,15 +16,14 @@ authFetch.interceptors.request.use((config) => {
     return Promise.reject(error);
 });
 
-export const checkForUnAuthorizedError = (error, thunkAPI) => {
+export const checkForUnAuthorizedError = (error, thunkAPI, alertCB, modalCB) => {
     if (error.response.status === 401) {
-        thunkAPI.dispatch(setShowAlert(true));
-        thunkAPI.dispatch(setAlertText('Unauthorized! Logging out...'));
+        thunkAPI.dispatch(alertCB('Unauthorized! Logging out...'));
         setTimeout(() => {
             thunkAPI.dispatch(setUser(null));
             thunkAPI.dispatch(setToken(null));
-            thunkAPI.dispatch(setShowAlert(false));
-            thunkAPI.dispatch(setAlertText(''));
+            thunkAPI.dispatch(alertCB(''));
+            thunkAPI.dispatch(modalCB());
             removeUserFromLocalStorage();
         }, 2000);
     }
