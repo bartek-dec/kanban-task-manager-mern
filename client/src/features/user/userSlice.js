@@ -1,5 +1,5 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {addUserToLocalStorage, getUserFromLocalStorage, removeUserFromLocalStorage} from "../../utils/localStorage";
+import {addUserToLocalStorage, getUserFromLocalStorage} from "../../utils/localStorage";
 import axios from "axios";
 import {authFetch, checkForUnAuthorizedError} from "../../utils/axios";
 
@@ -7,6 +7,7 @@ const {user, token} = getUserFromLocalStorage();
 
 const initialState = {
     isLoading: false,
+    alertText: '',
     user: user || null,
     token: token || null,
     isUserModalVisible: false
@@ -35,14 +36,18 @@ export const updateUser = createAsyncThunk('updateUser', async (currentUser, thu
         const {data} = await authFetch.patch('/auth/updateUser', currentUser);
         return data;
     } catch (error) {
-        return checkForUnAuthorizedError(error, thunkAPI, closeUserModal);
+        return checkForUnAuthorizedError(error, thunkAPI, setAlertText, closeUserModal);
     }
 });
+
 
 const userSlice = createSlice({
     name: 'userSlice',
     initialState,
     reducers: {
+        setAlertText: (state, action) => {
+            state.alertText = action.payload;
+        },
         setUser: (state, action) => {
             state.user = action.payload;
         },
@@ -94,4 +99,4 @@ const userSlice = createSlice({
 
 export default userSlice.reducer;
 
-export const {setUser, setToken, showUserModal, closeUserModal} = userSlice.actions;
+export const {setUser, setToken, showUserModal, closeUserModal, setAlertText} = userSlice.actions;
