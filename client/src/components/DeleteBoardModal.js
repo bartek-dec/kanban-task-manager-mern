@@ -4,7 +4,7 @@ import {closeDeleteModal, deleteBoard} from "../features/board/boardSlice";
 import {useParams} from "react-router-dom";
 
 const DeleteBoardModal = () => {
-    const {isDeleteBoardModalVisible, currentBoardName, isLoading} = useSelector((state) => state.board);
+    const {isDeleteBoardModalVisible, activeBoard, isLoading, alertText} = useSelector((state) => state.board);
     const dispatch = useDispatch();
     const {id} = useParams();
 
@@ -25,8 +25,8 @@ const DeleteBoardModal = () => {
     return (
         <Wrapper className={isDeleteBoardModalVisible ? 'modal show-modal' : 'modal'} onClick={handleModalClick}>
             <div>
-                <h2>Delete this task?</h2>
-                <p>Are you sure you want to delete the "<span>{currentBoardName}</span>" board? This action will remove
+                <h2>{alertText ? 'Unauthorized! Logging out...' : 'Delete this task?'}</h2>
+                <p>Are you sure you want to delete the "<span>{activeBoard?.name}</span>" board? This action will remove
                     all the columns and tasks and cannot be undone.</p>
                 <section>
                     <button disabled={isLoading} type='button' className='delete' onClick={handleDelete}>Delete</button>
