@@ -1,12 +1,10 @@
 import styled from "styled-components";
-import {useSelector} from "react-redux";
 
-const Alert = () => {
-    const {alertText} = useSelector((state) => state.alert);
+const Alert = ({text}) => {
 
     return (
         <Wrapper>
-            <h3 className='alert'>{alertText}</h3>
+            <h3 className='alert'>{text}</h3>
         </Wrapper>
     );
 };
