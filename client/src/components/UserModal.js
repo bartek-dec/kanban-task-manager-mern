@@ -2,8 +2,7 @@ import styled from "styled-components";
 import {Alert, FormInputSmall} from "./index";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {closeUserModal} from "../features/user/userSlice";
-import {setShowAlert, setAlertText} from "../features/alert/alertSlice";
+import {closeUserModal, setAlertText} from "../features/user/userSlice";
 import validator from "validator";
 import {updateUser} from "../features/user/userSlice";
 
@@ -11,32 +10,31 @@ const inputErrors = {
     nameError: false,
     lastNameError: false,
     emailError: false,
-    passwordError: false
 }
 
 const UserModal = () => {
-    const {isLoading, user, isUserModalVisible} = useSelector((state) => state.user);
-    const {showAlert} = useSelector((state) => state.alert);
-    const [values, setValues] = useState({
-        name: user?.name || '',
-        lastName: user?.lastName || '',
-        email: user?.email || ''
-    });
     const [errors, setErrors] = useState(inputErrors);
+    const {isLoading, user, isUserModalVisible, alertText} = useSelector((state) => state.user);
     const dispatch = useDispatch();
+
+    const [values, setValues] = useState({
+        name: user?.name,
+        lastName: user?.lastName,
+        email: user?.email
+    });
+
 
     useEffect(() => {
         const ID = setTimeout(() => {
-            dispatch(setShowAlert(false));
-            dispatch(setAlertText(''));
             setErrors(inputErrors);
+            dispatch(setAlertText(''));
         }, 3000);
 
         return () => {
             clearTimeout(ID);
         }
         // eslint-disable-next-line
-    }, [errors, showAlert]);
+    }, [errors]);
 
     const handleChange = (e) => {
         setValues({...values, [e.target.name]: e.target.value});
@@ -45,11 +43,13 @@ const UserModal = () => {
     const handleModalClick = (e) => {
         if (e.target.classList.contains('modal')) {
             dispatch(closeUserModal());
-            setValues({
-                name: user?.name || '',
-                lastName: user?.lastName || '',
-                email: user?.email || ''
-            });
+            setTimeout(() => {
+                setValues({
+                    name: user?.name,
+                    lastName: user?.lastName,
+                    email: user?.email
+                });
+            }, 150);
         }
     }
 
@@ -58,8 +58,7 @@ const UserModal = () => {
         const {email, name, lastName} = values;
 
         if (!email || !name || !lastName) {
-            dispatch(setShowAlert(true));
-            dispatch(setAlertText('Please provide all values!'))
+            dispatch(setAlertText('Please provide all values!'));
 
             if (!name) {
                 setErrors((prevState) => {
@@ -69,7 +68,7 @@ const UserModal = () => {
             if (!lastName) {
                 setErrors((prevState) => {
                     return {...prevState, lastNameError: true};
-                })
+                });
             }
             if (!email) {
                 setErrors((prevState) => {
@@ -80,7 +79,6 @@ const UserModal = () => {
         }
 
         if (!validator.isEmail(email)) {
-            dispatch(setShowAlert(true));
             dispatch(setAlertText('Please provide valid email!'))
             setErrors((prevState) => {
                 return {...prevState, emailError: true}
@@ -97,7 +95,7 @@ const UserModal = () => {
 
                 <h2 className='small-header'>Update User</h2>
 
-                {showAlert && <Alert/>}
+                {alertText && <Alert text={alertText}/>}
 
                 <FormInputSmall type='text' error={errors.nameError} name='name' value={values.name}
                                 labelText='Name' handleChange={handleChange} label={true}/>
