@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import {useDispatch, useSelector} from "react-redux";
-import {closeEditModal, showDeleteModal} from "../features/board/boardSlice";
+import {closeEditModal, showDeleteModal, setIsEditing, showCreateModal} from "../features/board/boardSlice";
 
 const EditBoardModal = () => {
-    const {isEditBoardModalVisible} = useSelector((state) => state.board);
+    const {isEditBoardModalVisible, activeBoard} = useSelector((state) => state.board);
     const dispatch = useDispatch();
 
     const handleModalClick = (e) => {
@@ -13,14 +13,28 @@ const EditBoardModal = () => {
     }
 
     const handleDelete = () => {
-        dispatch(closeEditModal());
-        dispatch(showDeleteModal());
+        if (activeBoard) {
+            dispatch(closeEditModal());
+            dispatch(showDeleteModal());
+        }else {
+            dispatch(closeEditModal());
+        }
+    }
+
+    const handleEdit = () => {
+        if (activeBoard) {
+            dispatch(setIsEditing(true));
+            dispatch(closeEditModal());
+            dispatch(showCreateModal())
+        }else {
+            dispatch(closeEditModal());
+        }
     }
 
     return (
         <Wrapper className={isEditBoardModalVisible ? 'modal show-modal' : 'modal'} onClick={handleModalClick}>
             <div>
-                <button type='button' className='edit'>Edit Board</button>
+                <button type='button' className='edit' onClick={handleEdit}>Edit Board</button>
                 <button type='button' onClick={handleDelete}>Delete Board</button>
             </div>
         </Wrapper>

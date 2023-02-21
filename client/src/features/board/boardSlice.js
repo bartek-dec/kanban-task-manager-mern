@@ -1,14 +1,28 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import {authFetch, checkForUnAuthorizedError} from "../../utils/axios";
+import {nanoid} from "nanoid";
+
+const initialIDs = [nanoid(), nanoid()];
 
 const initialState = {
     isEditBoardModalVisible: false,
     isCreateBoardModalVisible: false,
     isDeleteBoardModalVisible: false,
+    alertText: '',
     isLoading: false,
     activeBoard: null,
-    currentBoardName: '',
-    boards: []
+    boards: [],
+
+    isEditing: false,
+    initialName: '',
+    initialValues: {
+        [initialIDs[0]]: '',
+        [initialIDs[1]]: '',
+    },
+    initialErrors: {
+        [initialIDs[0]]: false,
+        [initialIDs[1]]: false,
+    }
 }
 
 export const createBoard = createAsyncThunk('createBoard', async (payload, thunkAPI) => {
@@ -16,7 +30,7 @@ export const createBoard = createAsyncThunk('createBoard', async (payload, thunk
         const {data} = await authFetch.post('/boards', payload);
         return data;
     } catch (error) {
-        return checkForUnAuthorizedError(error, thunkAPI);
+        return checkForUnAuthorizedError(error, thunkAPI, setAlertText, closeCreateModal);
     }
 });
 
@@ -34,9 +48,19 @@ export const deleteBoard = createAsyncThunk('deleteBoard', async (id, thunkAPI) 
         await authFetch.delete(`boards/${id}`);
         thunkAPI.dispatch(getBoards());
     } catch (error) {
-        return checkForUnAuthorizedError(error, thunkAPI);
+        return checkForUnAuthorizedError(error, thunkAPI, setAlertText, closeDeleteModal);
     }
 });
+
+export const editBoard = createAsyncThunk('editBoard', async (payload, thunkAPI) => {
+    try {
+        const {id, name, columns} = payload;
+        await authFetch.patch(`boards/${id}`, {name, columns});
+        thunkAPI.dispatch(getBoards());
+    } catch (error) {
+        return checkForUnAuthorizedError(error, thunkAPI, setAlertText, closeCreateModal);
+    }
+})
 
 const boardSlice = createSlice({
     name: 'boardSlice',
@@ -44,6 +68,9 @@ const boardSlice = createSlice({
     reducers: {
         showEditModal: (state) => {
             state.isEditBoardModalVisible = true;
+        },
+        setAlertText: (state, action) => {
+            state.alertText = action.payload;
         },
         closeEditModal: (state) => {
             state.isEditBoardModalVisible = false;
@@ -61,9 +88,40 @@ const boardSlice = createSlice({
             state.isDeleteBoardModalVisible = false;
         },
         setActiveBoard: (state, action) => {
-            const [board] = state.boards.filter((board) => board._id === action.payload);
-            state.activeBoard = board;
+            if (action.payload === null) {
+                state.activeBoard = null;
+            } else {
+                const [board] = state.boards.filter((board) => board._id === action.payload);
+                state.activeBoard = board;
+            }
         },
+        setIsEditing: (state, action) => {
+            state.isEditing = action.payload;
+
+            if (action.payload === false) {
+                state.initialName = '';
+                state.initialValues = {
+                    [initialIDs[0]]: '',
+                    [initialIDs[1]]: '',
+                };
+                state.initialErrors = {
+                    [initialIDs[0]]: false,
+                    [initialIDs[1]]: false,
+                }
+            } else {
+                const ids = state.activeBoard.columns.map(() => nanoid());
+                const values = {};
+                const errors = {};
+                ids.forEach((id, index) => {
+                    values[id] = state.activeBoard.columns[index];
+                    errors[id] = false;
+                });
+
+                state.initialName = state.activeBoard.name;
+                state.initialValues = values;
+                state.initialErrors = errors;
+            }
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(createBoard.pending, (state) => {
@@ -74,9 +132,6 @@ const boardSlice = createSlice({
             state.boards = [...state.boards, action.payload.board];
         }).addCase(createBoard.rejected, (state) => {
             state.isLoading = false;
-            setTimeout(() => {
-                state.isCreateBoardModalVisible = false;
-            }, 2000);
         }).addCase(getBoards.pending, (state) => {
             state.isLoading = true;
         }).addCase(getBoards.fulfilled, (state, action) => {
@@ -92,9 +147,33 @@ const boardSlice = createSlice({
             state.isDeleteBoardModalVisible = false;
         }).addCase(deleteBoard.rejected, (state) => {
             state.isLoading = false;
-            setTimeout(() => {
-                state.isDeleteBoardModalVisible = false;
-            }, 2000);
+        }).addCase(editBoard.pending, (state) => {
+            state.isLoading = true;
+        }).addCase(editBoard.fulfilled, (state) => {
+            state.isLoading = false;
+            state.isCreateBoardModalVisible = false;
+            state.isEditing = false;
+            state.initialName = '';
+            state.initialValues = {
+                [initialIDs[0]]: '',
+                [initialIDs[1]]: '',
+            };
+            state.initialErrors = {
+                [initialIDs[0]]: false,
+                [initialIDs[1]]: false,
+            }
+        }).addCase(editBoard.rejected, (state) => {
+            state.isLoading = false;
+            state.isEditing = false;
+            state.initialName = '';
+            state.initialValues = {
+                [initialIDs[0]]: '',
+                [initialIDs[1]]: '',
+            };
+            state.initialErrors = {
+                [initialIDs[0]]: false,
+                [initialIDs[1]]: false,
+            }
         })
     }
 });
@@ -103,10 +182,12 @@ export default boardSlice.reducer;
 
 export const {
     showEditModal,
+    setAlertText,
     closeEditModal,
     showCreateModal,
     closeCreateModal,
     showDeleteModal,
     closeDeleteModal,
     setActiveBoard,
+    setIsEditing
 } = boardSlice.actions;

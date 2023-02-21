@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import {useSelector, useDispatch} from "react-redux";
-import {useState, useEffect} from "react";
 import {
     AddTaskButton,
     EditBoardButton,
@@ -16,11 +15,6 @@ import {showSidebarModal} from "../features/sidebarSlice/sidebarSlice";
 const Navbar = () => {
     const {activeBoard} = useSelector((state) => state.board);
     const dispatch = useDispatch();
-    const [title, setTitle] = useState(activeBoard?.name);
-
-    useEffect(() => {
-        setTitle(activeBoard?.name);
-    }, [activeBoard]);
 
     const handleClick = () => {
         dispatch(showSidebarModal());
@@ -28,7 +22,7 @@ const Navbar = () => {
 
     return (
         <Wrapper>
-            <h2>{title}
+            <h2>{activeBoard?.name}
                 <button className='arrow-btn' onClick={handleClick}>
                     <IoIosArrowDown className='arrow'/>
                 </button>

@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import {Alert, FormInputSmall} from "./index";
-import {closeCreateModal, createBoard} from "../features/board/boardSlice";
-import {setShowAlert, setAlertText} from "../features/alert/alertSlice";
+import {closeCreateModal, createBoard, setIsEditing, editBoard, setAlertText} from "../features/board/boardSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {useState, useEffect} from "react";
 import {HiPlusSm} from 'react-icons/hi';
@@ -9,39 +8,39 @@ import {IoMdClose} from 'react-icons/io';
 import {nanoid} from "nanoid";
 import {filterObject} from "../utils/objectUtil";
 
-let initialIDs = [nanoid(), nanoid()];
-let initialValues = {};
-let initialErrors = {};
-
-initialIDs.forEach((id) => {
-    initialValues[id] = '';
-    initialErrors[id] = false;
-});
-
 const CreateBoardModal = () => {
     const dispatch = useDispatch();
-    const {isCreateBoardModalVisible, isLoading} = useSelector((state) => state.board);
-    const {showAlert} = useSelector((state) => state.alert);
+    const {
+        isCreateBoardModalVisible,
+        isLoading,
+        isEditing,
+        activeBoard,
+        alertText,
+        initialName,
+        initialValues,
+        initialErrors
+    } = useSelector((state) => state.board);
 
-    const [name, setName] = useState('');
+    const [name, setName] = useState(initialName);
     const [nameError, setNameError] = useState(false);
-    const [columnIDs, setColumnIDs] = useState(initialIDs);
+    const [columnIDs, setColumnIDs] = useState(Object.keys(initialValues));
     const [values, setValues] = useState(initialValues);
     const [columnErrors, setColumnErrors] = useState(initialErrors);
 
+    // reassign initial values for editing
     useEffect(() => {
+        setName(initialName);
+        setColumnIDs(Object.keys(initialValues));
+        setValues(initialValues);
+        setColumnErrors(initialErrors);
+    }, [isEditing]);
+
+    useEffect(() => {
+        // hide warnings after 3s
         const timeoutID = setTimeout(() => {
-            dispatch(setShowAlert(false));
             dispatch(setAlertText(''));
             setNameError(false);
-
-            // reset all column errors
-            const errors = {...columnErrors};
-            Object.entries(errors).forEach((entry) => {
-                const [key] = entry;
-                errors[key] = false;
-            });
-            setColumnErrors(errors);
+            setColumnErrors(initialErrors);
         }, 3000);
 
         return () => {
@@ -49,27 +48,28 @@ const CreateBoardModal = () => {
         }
     }, [nameError, columnErrors]);
 
-    const resetLocalState = () => {
-        setTimeout(() => {
-            initialIDs = [nanoid(), nanoid()];
-            initialValues = {};
-            initialErrors = {};
-
-            initialIDs.forEach((id) => {
-                initialValues[id] = '';
-                initialErrors[id] = false;
-            });
-            setName('');
-            setColumnIDs(initialIDs);
-            setValues(initialValues);
-            setColumnErrors(initialErrors);
-        }, 150);
+    const resetState = () => {
+        setName('');
+        const id1 = nanoid();
+        const id2 = nanoid();
+        setColumnIDs([id1, id2]);
+        setValues({
+            [id1]: '',
+            [id2]: ''
+        });
+        setColumnErrors({
+            [id1]: false,
+            [id2]: false
+        });
     }
 
     const handleModalClick = (e) => {
         if (e.target.classList.contains('modal')) {
             dispatch(closeCreateModal());
-            resetLocalState();
+            setTimeout(() => {
+                dispatch(setIsEditing(false));
+                resetState();
+            }, 150);
         }
     }
 
@@ -126,26 +126,29 @@ const CreateBoardModal = () => {
         // check for errors
         if ((!name && emptyColumns) || !name) {
             setNameError(true);
-            dispatch(setShowAlert(true));
             dispatch(setAlertText('Please provide all values'));
             return;
         } else if (emptyColumns) {
-            dispatch(setShowAlert(true));
             dispatch(setAlertText('Please provide all values'));
             return;
         }
 
+        if (isEditing) {
+            dispatch(editBoard({name, columns: Object.values(values), id: activeBoard._id}));
+            return;
+        }
+
         dispatch(createBoard({name, columns: Object.values(values)}));
-        resetLocalState();
+        resetState();
     }
 
     return (
         <Wrapper className={isCreateBoardModalVisible ? 'modal show-modal' : 'modal'} onClick={handleModalClick}>
             <form className='form-board' onSubmit={handleSubmit} noValidate>
 
-                <h2 className='small-header'>Add New Board</h2>
+                <h2 className='small-header'>{isEditing ? 'Edit Board' : 'Add New Board'}</h2>
 
-                {showAlert && <Alert/>}
+                {alertText && <Alert text={alertText}/>}
 
                 <FormInputSmall type='text' name='name' value={name} labelText='Name' handleChange={handleNameChange}
                                 error={nameError} label={true} placeholder='e.g Web Design'/>
@@ -155,7 +158,7 @@ const CreateBoardModal = () => {
 
                     {columnIDs.map((id) => {
                         return (
-                            <div key={id} className='column' data-id={id}>
+                            <div key={id} className='column'>
                                 <FormInputSmall type='text' name={id} value={values[id]} placeholder='e.g Todo'
                                                 error={columnErrors[id]} labelText='Last Name'
                                                 handleChange={handleChange}/>
@@ -173,8 +176,8 @@ const CreateBoardModal = () => {
                         onClick={handleAddNewColumn}>
                     <HiPlusSm/> Add New Column
                 </button>
-                <button disabled={isLoading} type='submit' className='btn new-board-btn create-board-btn'>Create New
-                    Board
+                <button disabled={isLoading} type='submit' className='btn new-board-btn create-board-btn'>
+                    {isEditing ? 'Edit Board' : 'Create New Board'}
                 </button>
             </form>
         </Wrapper>

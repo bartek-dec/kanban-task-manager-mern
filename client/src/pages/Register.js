@@ -4,8 +4,7 @@ import {useSelector, useDispatch} from "react-redux";
 import {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import validator from "validator";
-import {registerUser, loginUser} from "../features/user/userSlice";
-import {setShowAlert, setAlertText} from "../features/alert/alertSlice";
+import {registerUser, loginUser, setAlertText} from "../features/user/userSlice";
 
 const initialState = {
     name: '',
@@ -24,13 +23,11 @@ const Register = () => {
     const [values, setValues] = useState(initialState);
     const [errors, setErrors] = useState(inputErrors);
     const dispatch = useDispatch();
-    const {isLoading, user} = useSelector((state) => state.user);
-    const {showAlert} = useSelector((state) => state.alert);
+    const {isLoading, user, alertText} = useSelector((state) => state.user);
     const navigate = useNavigate();
 
     useEffect(() => {
         const ID = setTimeout(() => {
-            dispatch(setShowAlert(false));
             dispatch(setAlertText(''));
             setErrors(inputErrors);
         }, 3000);
@@ -39,13 +36,14 @@ const Register = () => {
             clearTimeout(ID);
         }
         // eslint-disable-next-line
-    }, [errors, showAlert]);
+    }, [errors]);
 
     useEffect(() => {
         if (user) {
             navigate('/');
         }
-    }, [user, navigate]);
+        // eslint-disable-next-line
+    }, [user]);
 
     const handleChange = (e) => {
         setValues({...values, [e.target.name]: e.target.value});
@@ -54,7 +52,6 @@ const Register = () => {
     const toggleMember = () => {
         setValues({...initialState, isMember: !values.isMember});
         dispatch(setAlertText(''));
-        dispatch(setShowAlert(false));
         setErrors(inputErrors);
     }
 
@@ -63,8 +60,7 @@ const Register = () => {
         const {email, password, isMember, name} = values;
 
         if (!email || !password || (!isMember && !name)) {
-            dispatch(setShowAlert(true));
-            dispatch(setAlertText('Please provide all values!'))
+            dispatch(setAlertText('Please provide all values!'));
 
             if (!name) {
                 setErrors((prevState) => {
@@ -85,7 +81,6 @@ const Register = () => {
         }
 
         if (!validator.isEmail(email)) {
-            dispatch(setShowAlert(true));
             dispatch(setAlertText('Please provide valid email!'))
             setErrors((prevState) => {
                 return {...prevState, emailError: true}
@@ -110,7 +105,7 @@ const Register = () => {
 
                 <h2 className='header'>{values.isMember ? 'Login' : 'Register'}</h2>
 
-                {showAlert && <Alert/>}
+                {alertText && <Alert text={alertText}/>}
 
                 {!values.isMember &&
                     <FormInput type='text' error={errors.nameError} name='name' value={values.name}

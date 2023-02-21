@@ -1,5 +1,4 @@
-import AddBoard from "./AddBoard";
-import Profile from "./Profile";
+import BoardLayout from "./BoardLayout";
 import SharedLayout from "./SharedLayout";
 
-export {AddBoard, Profile, SharedLayout}
+export {BoardLayout, SharedLayout}
