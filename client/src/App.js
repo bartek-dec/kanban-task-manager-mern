@@ -1,5 +1,5 @@
 import {Landing, Register, Error, ProtectedRoute} from './pages';
-import {AddBoard, Profile, SharedLayout} from './pages/dashboard';
+import {BoardLayout, SharedLayout} from './pages/dashboard';
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import {useEffect} from "react";
 import {useSelector} from "react-redux";
@@ -17,8 +17,7 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route path='/' element={<ProtectedRoute><SharedLayout/></ProtectedRoute>}>
-                    <Route path='profile' element={<Profile/>}/>
-                    <Route path='add-board' element={<AddBoard/>}/>
+                    <Route path='/:id'  element={<BoardLayout/>}/>
                 </Route>
                 <Route path='/register' element={<Register/>}/>
                 <Route path='/landing' element={<Landing/>}/>
