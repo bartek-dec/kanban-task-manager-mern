@@ -15,13 +15,13 @@ const BoardsContainer = () => {
     }, []);
 
     useEffect(() => {
-        // set active board
-        if (activeBoard) {
-            navigate(`/${activeBoard._id}`);
-        } else if (!activeBoard && boards.length > 0) {
+        // navigate to active board on startup and set active board after deleting the previous one
+        if (!activeBoard && boards.length > 0) {
             const {_id: id} = boards[0];
             dispatch(setActiveBoard(id));
             navigate(`/${id}`);
+        } else if (!activeBoard && boards.length === 0) {
+            navigate('/');
         }
     }, [boards]);
 
