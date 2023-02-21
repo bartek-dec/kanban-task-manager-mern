@@ -1,6 +1,7 @@
 import axios from "axios";
 import {getUserFromLocalStorage, removeUserFromLocalStorage} from "./localStorage";
 import {setToken, setUser} from "../features/user/userSlice";
+import {setActiveBoard, setIsEditing} from "../features/board/boardSlice";
 
 export const authFetch = axios.create({
     baseURL: '/api/v1',
@@ -22,6 +23,8 @@ export const checkForUnAuthorizedError = (error, thunkAPI, alertCB, modalCB) => 
         setTimeout(() => {
             thunkAPI.dispatch(setUser(null));
             thunkAPI.dispatch(setToken(null));
+            thunkAPI.dispatch(setActiveBoard(null));
+            thunkAPI.dispatch(setIsEditing(false));
             thunkAPI.dispatch(alertCB(''));
             thunkAPI.dispatch(modalCB());
             removeUserFromLocalStorage();
