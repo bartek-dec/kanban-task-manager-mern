@@ -7,7 +7,8 @@ import {
     LogoutModal,
     EditBoardModal,
     SidebarModal,
-    DeleteBoardModal
+    DeleteBoardModal,
+    Logo
 } from "./index";
 import {IoIosArrowDown} from 'react-icons/io';
 import {showSidebarModal} from "../features/sidebarSlice/sidebarSlice";
@@ -22,16 +23,22 @@ const Navbar = () => {
 
     return (
         <Wrapper>
-            <h2>{activeBoard?.name}
-                <button className='arrow-btn' onClick={handleClick}>
-                    <IoIosArrowDown className='arrow'/>
-                </button>
-            </h2>
-            <div className='nav-btn-container'>
-                <AddTaskButton/>
-                <EditBoardButton/>
-                <LogoutButton/>
+            <div className='logo-container'>
+                <Logo/>
             </div>
+            <div className='nav-container'>
+                <h2 className='nav-header'>{activeBoard?.name}
+                    <button className='arrow-btn' onClick={handleClick}>
+                        <IoIosArrowDown className='arrow'/>
+                    </button>
+                </h2>
+                <div className='nav-btn-container'>
+                    <AddTaskButton/>
+                    <EditBoardButton/>
+                    <LogoutButton/>
+                </div>
+            </div>
+
             <LogoutModal/>
             <EditBoardModal/>
             <DeleteBoardModal/>
@@ -47,9 +54,23 @@ const Wrapper = styled.nav`
   background-color: var(--Navbar-Background-Color);
   display: flex;
   align-items: center;
-  justify-content: space-between;
 
-  h2 {
+  .logo-container {
+    height: 100%;
+    min-width: var(--Sidebar-Width);
+    padding-left: 2rem;
+    display: none;
+  }
+
+  .nav-container {
+    height: 100%;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-header {
     text-transform: capitalize;
     margin-left: 1rem;
     color: var(--Main-Text-Color);
@@ -89,9 +110,20 @@ const Wrapper = styled.nav`
   }
 
   @media (min-width: 650px) {
-    border-left: 1px solid var(--Border-Color);
+    position: sticky;
+    top: 0;
 
-    h2 {
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-container {
+      width: calc(100vw - var(--Sidebar-Width));
+      border-left: 1px solid var(--Border-Color);
+    }
+
+    .nav-header {
       font-size: var(--font-size-24);
     }
 

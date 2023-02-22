@@ -5,10 +5,10 @@ import {Sidebar, Navbar} from '../../components';
 const SharedLayout = () => {
     return (
         <Wrapper>
-            <main className='dashboard'>
-                <Sidebar/>
-                <div>
-                    <Navbar/>
+            <main >
+                <Navbar/>
+                <div className='dashboard'>
+                    <Sidebar/>
                     <Outlet/>
                 </div>
             </main>

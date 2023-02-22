@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import {
-    Logo,
     ToggleTheme,
     HideButton,
     ShowButton,
@@ -17,10 +16,6 @@ const Sidebar = () => {
     return (
         <Wrapper>
             <div className={isSidebarVisible ? 'container' : 'container hide-sidebar'}>
-                <div className='logo-container'>
-                    <Logo/>
-                </div>
-
                 <div className='boards-container'>
                     <BoardsContainer/>
                 </div>
@@ -43,18 +38,11 @@ export default Sidebar;
 const Wrapper = styled.aside`
   .container {
     width: var(--Sidebar-Width);
-    height: 100vh;
+    height: calc(100vh - var(--Navbar-Height));
     padding-right: 1.5rem;
     background-color: var(--Sidebar-Background-Color);
     margin-left: -18rem;
     transition: var(--transition);
-  }
-
-  .logo-container {
-    height: var(--Navbar-Height);
-    padding-left: 2rem;
-    display: flex;
-    align-items: center;
   }
 
   .boards-container {
@@ -73,6 +61,8 @@ const Wrapper = styled.aside`
 
   @media (min-width: 650px) {
     .container {
+      position: sticky;
+      top: var(--Navbar-Height);
       margin-left: 0;
     }
 
@@ -80,5 +70,4 @@ const Wrapper = styled.aside`
       margin-left: -18rem;
     }
   }
-
 `;
