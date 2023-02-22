@@ -19,7 +19,7 @@ const LogoutModal = () => {
         dispatch(closeModal());
         dispatch(setToken(null));
         dispatch(setUser(null));
-        setActiveBoard(null);
+        dispatch(setActiveBoard(null));
         removeUserFromLocalStorage();
     }
 
