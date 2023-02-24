@@ -6,7 +6,6 @@ const TextAreaInput = ({name, labelText, value, handleChange}) => {
             <label htmlFor={name}>{labelText ? labelText : name}</label>
 
             <textarea rows='5' name={name} value={value} onChange={handleChange}
-                      className=''
                       placeholder={`e.g. It's always good to take a break. This 15 min break will recharge the batteries a little.`}/>
         </Wrapper>
     );
