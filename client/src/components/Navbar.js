@@ -1,15 +1,6 @@
 import styled from "styled-components";
 import {useSelector, useDispatch} from "react-redux";
-import {
-    AddTaskButton,
-    EditBoardButton,
-    LogoutButton,
-    LogoutModal,
-    EditBoardModal,
-    SidebarModal,
-    DeleteBoardModal,
-    Logo
-} from "./index";
+import {AddTaskButton, EditBoardButton, LogoutButton, Logo,} from "./index";
 import {IoIosArrowDown} from 'react-icons/io';
 import {showSidebarModal} from "../features/sidebarSlice/sidebarSlice";
 
@@ -38,11 +29,6 @@ const Navbar = () => {
                     <LogoutButton/>
                 </div>
             </div>
-
-            <LogoutModal/>
-            <EditBoardModal/>
-            <DeleteBoardModal/>
-            <SidebarModal/>
         </Wrapper>
     );
 };
@@ -50,6 +36,8 @@ const Navbar = () => {
 export default Navbar;
 
 const Wrapper = styled.nav`
+  position: sticky;
+  top: 0;
   height: var(--Navbar-Height);
   background-color: var(--Navbar-Background-Color);
   display: flex;
@@ -110,9 +98,6 @@ const Wrapper = styled.nav`
   }
 
   @media (min-width: 650px) {
-    position: sticky;
-    top: 0;
-
     .logo-container {
       display: flex;
       align-items: center;

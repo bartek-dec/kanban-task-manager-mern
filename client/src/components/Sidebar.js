@@ -6,7 +6,7 @@ import {
     UserButton,
     BoardsContainer,
     UserModal,
-    CreateBoardModal
+    CreateBoardModal, LogoutModal, EditBoardModal, DeleteBoardModal, SidebarModal, CreateTaskModal
 } from '../components';
 import {useSelector} from "react-redux";
 
@@ -29,6 +29,12 @@ const Sidebar = () => {
             </div>
             <UserModal/>
             <CreateBoardModal/>
+
+            <LogoutModal/>
+            <EditBoardModal/>
+            <DeleteBoardModal/>
+            <SidebarModal/>
+            <CreateTaskModal/>
         </Wrapper>
     );
 };
@@ -43,6 +49,9 @@ const Wrapper = styled.aside`
     background-color: var(--Sidebar-Background-Color);
     margin-left: -18rem;
     transition: var(--transition);
+    
+    position: sticky;
+    top: var(--Navbar-Height);
   }
 
   .boards-container {
@@ -61,8 +70,6 @@ const Wrapper = styled.aside`
 
   @media (min-width: 650px) {
     .container {
-      position: sticky;
-      top: var(--Navbar-Height);
       margin-left: 0;
     }
 
