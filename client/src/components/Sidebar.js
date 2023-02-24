@@ -1,13 +1,12 @@
 import styled from "styled-components";
 import {
-    Logo,
     ToggleTheme,
     HideButton,
     ShowButton,
     UserButton,
     BoardsContainer,
     UserModal,
-    CreateBoardModal
+    CreateBoardModal, LogoutModal, EditBoardModal, DeleteBoardModal, SidebarModal, CreateTaskModal
 } from '../components';
 import {useSelector} from "react-redux";
 
@@ -17,10 +16,6 @@ const Sidebar = () => {
     return (
         <Wrapper>
             <div className={isSidebarVisible ? 'container' : 'container hide-sidebar'}>
-                <div className='logo-container'>
-                    <Logo/>
-                </div>
-
                 <div className='boards-container'>
                     <BoardsContainer/>
                 </div>
@@ -34,6 +29,12 @@ const Sidebar = () => {
             </div>
             <UserModal/>
             <CreateBoardModal/>
+
+            <LogoutModal/>
+            <EditBoardModal/>
+            <DeleteBoardModal/>
+            <SidebarModal/>
+            <CreateTaskModal/>
         </Wrapper>
     );
 };
@@ -43,18 +44,14 @@ export default Sidebar;
 const Wrapper = styled.aside`
   .container {
     width: var(--Sidebar-Width);
-    height: 100vh;
+    height: calc(100vh - var(--Navbar-Height));
     padding-right: 1.5rem;
     background-color: var(--Sidebar-Background-Color);
     margin-left: -18rem;
     transition: var(--transition);
-  }
-
-  .logo-container {
-    height: var(--Navbar-Height);
-    padding-left: 2rem;
-    display: flex;
-    align-items: center;
+    
+    position: sticky;
+    top: var(--Navbar-Height);
   }
 
   .boards-container {
@@ -80,5 +77,4 @@ const Wrapper = styled.aside`
       margin-left: -18rem;
     }
   }
-
 `;

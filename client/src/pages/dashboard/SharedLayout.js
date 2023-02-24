@@ -5,20 +5,18 @@ import {Sidebar, Navbar} from '../../components';
 const SharedLayout = () => {
     return (
         <Wrapper>
-            <main className='dashboard'>
+            <Navbar/>
+            <div className='dashboard'>
                 <Sidebar/>
-                <div>
-                    <Navbar/>
-                    <Outlet/>
-                </div>
-            </main>
+                <Outlet/>
+            </div>
         </Wrapper>
     );
 };
 
 export default SharedLayout;
 
-const Wrapper = styled.section`
+const Wrapper = styled.main`
   .dashboard {
     display: grid;
     grid-template-columns:auto 1fr;

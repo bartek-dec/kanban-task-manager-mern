@@ -93,7 +93,7 @@ body.light {
     --Add-New-Subtask-Background-Color-Hover: var(--Main-Purple-Hover-2);
     --Add-New-Task-Button-Background-Color: var(--Main-Purple);
     --Add-New-Task-Button-Background-Color-Hover: var(--Main-Purple-Hover-3);
-    --Border-Color: var(--Lines-Light);
+    --Border-Color: var(--Light-Gray);
     --Cancel-Button-Background-Color: var(--Main-Purple-Hover-1);
     --Dark-Light-Mode-Switch-Background-Color: var(--Light-Grey-Light-BG);
     --Dialog-Text-1-Color: var(--Medium-Grey);
@@ -188,7 +188,6 @@ img {
     visibility: visible;
     z-index: 10;
 }
-
 
 
 

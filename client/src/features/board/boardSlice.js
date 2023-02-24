@@ -55,8 +55,9 @@ export const deleteBoard = createAsyncThunk('deleteBoard', async (id, thunkAPI) 
 export const editBoard = createAsyncThunk('editBoard', async (payload, thunkAPI) => {
     try {
         const {id, name, columns} = payload;
-        await authFetch.patch(`boards/${id}`, {name, columns});
+        const {data} = await authFetch.patch(`boards/${id}`, {name, columns});
         thunkAPI.dispatch(getBoards());
+        return data;
     } catch (error) {
         return checkForUnAuthorizedError(error, thunkAPI, setAlertText, closeCreateModal);
     }
@@ -149,9 +150,10 @@ const boardSlice = createSlice({
             state.isLoading = false;
         }).addCase(editBoard.pending, (state) => {
             state.isLoading = true;
-        }).addCase(editBoard.fulfilled, (state) => {
+        }).addCase(editBoard.fulfilled, (state, action) => {
             state.isLoading = false;
             state.isCreateBoardModalVisible = false;
+            state.activeBoard = action.payload.updatedBoard;
             state.isEditing = false;
             state.initialName = '';
             state.initialValues = {
