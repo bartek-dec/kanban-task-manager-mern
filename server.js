@@ -9,6 +9,7 @@ import notFoundMiddleware from "./middleware/notFound.js";
 import errorHandlerMiddleware from "./middleware/errorHandler.js";
 import authRouter from "./routes/authRouter.js";
 import boardRouter from "./routes/boardRouter.js";
+import taskRouter from "./routes/taskRouter.js";
 
 const app = express();
 app.use(express.json());
@@ -21,6 +22,7 @@ if (process.env.NODE_ENV !== 'production') {
 // routes
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/boards', boardRouter);
+app.use('/api/v1/tasks', taskRouter);
 
 // catch errors
 app.use(notFoundMiddleware);
