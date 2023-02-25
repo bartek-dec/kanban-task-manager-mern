@@ -1,46 +1,28 @@
 import styled from "styled-components";
 import {Alert, FormInputSmall} from "./index";
-import {closeCreateModal, createBoard, setIsEditing, editBoard, setAlertText} from "../features/board/boardSlice";
+import {
+    closeCreateModal, createBoard, setIsEditing, editBoard, setAlertText, setNameError, setColumnErrors,
+    resetColumnErrors, handleBoardChange, handleColumnChange, addRow, removeRow, resetBoard
+} from "../features/board/boardSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {useState, useEffect} from "react";
+import {useEffect} from "react";
 import {HiPlusSm} from 'react-icons/hi';
 import {IoMdClose} from 'react-icons/io';
-import {nanoid} from "nanoid";
-import {filterObject} from "../utils/objectUtil";
 
 const CreateBoardModal = () => {
     const dispatch = useDispatch();
     const {
-        isCreateBoardModalVisible,
-        isLoading,
-        isEditing,
-        activeBoard,
-        alertText,
-        initialName,
-        initialValues,
-        initialErrors
+        isCreateBoardModalVisible, isLoading, isEditing, activeBoard, alertText, name, nameError,
+        columns, columnErrors
     } = useSelector((state) => state.board);
 
-    const [name, setName] = useState(initialName);
-    const [nameError, setNameError] = useState(false);
-    const [columnIDs, setColumnIDs] = useState(Object.keys(initialValues));
-    const [values, setValues] = useState(initialValues);
-    const [columnErrors, setColumnErrors] = useState(initialErrors);
-
-    // reassign initial values for editing
-    useEffect(() => {
-        setName(initialName);
-        setColumnIDs(Object.keys(initialValues));
-        setValues(initialValues);
-        setColumnErrors(initialErrors);
-    }, [isEditing]);
 
     useEffect(() => {
         // hide warnings after 3s
         const timeoutID = setTimeout(() => {
             dispatch(setAlertText(''));
-            setNameError(false);
-            setColumnErrors(initialErrors);
+            dispatch(setNameError(false));
+            dispatch(resetColumnErrors());
         }, 3000);
 
         return () => {
@@ -48,98 +30,69 @@ const CreateBoardModal = () => {
         }
     }, [nameError, columnErrors]);
 
-    const resetState = () => {
-        setName('');
-        const id1 = nanoid();
-        const id2 = nanoid();
-        setColumnIDs([id1, id2]);
-        setValues({
-            [id1]: '',
-            [id2]: ''
-        });
-        setColumnErrors({
-            [id1]: false,
-            [id2]: false
-        });
-    }
-
     const handleModalClick = (e) => {
         if (e.target.classList.contains('modal')) {
             dispatch(closeCreateModal());
             setTimeout(() => {
                 dispatch(setIsEditing(false));
-                resetState();
+                dispatch(resetBoard());
             }, 150);
         }
     }
 
-    const handleNameChange = (e) => {
-        setName(e.target.value);
+    const handleChange = (e) => {
+        const name = e.target.name;
+        const value = e.target.value;
+        dispatch(handleBoardChange({name, value}));
     }
 
-    const handleChange = (e) => {
-        setValues({...values, [e.target.name]: e.target.value});
+    const handleRowChange = (e) => {
+        const name = e.target.name;
+        const value = e.target.value;
+        dispatch(handleColumnChange({name, value}));
     }
 
     const handleAddNewColumn = () => {
-        // generate new Id
-        const id = nanoid();
-
-        // add Id to the array of existing Ids
-        setColumnIDs((prevState) => {
-            return [...prevState, id];
-        });
-        // create new value placeholder for the corresponding Id
-        setValues({...values, [id]: ''});
-        // create new error placeholder for the corresponding Id
-        setColumnErrors({...columnErrors, [id]: false});
+        dispatch(addRow());
     }
 
     const handleRemoveColumn = (e) => {
         // get current Id from the clicked button
         const id = e.currentTarget.dataset.id;
-        // remove selected Id from array of existing Ids
-        const remainColumns = columnIDs.filter((column) => column !== id);
-        setColumnIDs(remainColumns);
-
-        // remove the key/value pair from the object, for the selected Id
-        const remainValues = filterObject(values, id);
-        setValues(remainValues);
-        const remainErrors = filterObject(columnErrors, id);
-        setColumnErrors(remainErrors);
+        dispatch(removeRow(id));
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
         let emptyColumns = false;
+        const currentErrors = {...columnErrors};
 
-        Object.entries(values).forEach((item) => {
+        Object.entries(columns).forEach((item) => {
             const [id, value] = item;
             if (!value) {
-                setColumnErrors((prevState) => {
-                    return {...prevState, [id]: true}
-                });
+                currentErrors[id] = true;
                 emptyColumns = true;
             }
         });
 
         // check for errors
         if ((!name && emptyColumns) || !name) {
-            setNameError(true);
+            dispatch(setNameError(true));
+            dispatch(setColumnErrors(currentErrors));
             dispatch(setAlertText('Please provide all values'));
             return;
         } else if (emptyColumns) {
+            dispatch(setColumnErrors(currentErrors));
             dispatch(setAlertText('Please provide all values'));
             return;
         }
 
         if (isEditing) {
-            dispatch(editBoard({name, columns: Object.values(values), id: activeBoard._id}));
+            dispatch(editBoard({name, columns: Object.values(columns), id: activeBoard._id}));
             return;
         }
 
-        dispatch(createBoard({name, columns: Object.values(values)}));
-        resetState();
+        dispatch(createBoard({name, columns: Object.values(columns)}));
     }
 
     return (
@@ -150,18 +103,18 @@ const CreateBoardModal = () => {
 
                 {alertText && <Alert text={alertText}/>}
 
-                <FormInputSmall type='text' name='name' value={name} labelText='Name' handleChange={handleNameChange}
+                <FormInputSmall type='text' name='name' value={name} labelText='Name' handleChange={handleChange}
                                 error={nameError} label={true} placeholder='e.g Web Design'/>
 
                 <p>Columns</p>
                 <div className='columns-container'>
 
-                    {columnIDs.map((id) => {
+                    {Object.keys(columns).map((id) => {
                         return (
                             <div key={id} className='column'>
-                                <FormInputSmall type='text' name={id} value={values[id]} placeholder='e.g Todo'
+                                <FormInputSmall type='text' name={id} value={columns[id]} placeholder='e.g Todo'
                                                 error={columnErrors[id]} labelText='Last Name'
-                                                handleChange={handleChange}/>
+                                                handleChange={handleRowChange}/>
 
                                 <button type='button' className='remove-btn' data-id={id} onClick={handleRemoveColumn}>
                                     <IoMdClose className='close-icon'/>
