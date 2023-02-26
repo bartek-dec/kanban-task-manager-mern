@@ -23,6 +23,7 @@ import DeleteBoardModal from "./DeleteBoardModal";
 import CreateTaskModal from "./CreateTaskModal";
 import TextAreaInput from "./TextAreaInput";
 import SelectInput from "./SelectInput";
+import Column from "./Column";
 
 export {
     Logo,
@@ -49,5 +50,6 @@ export {
     DeleteBoardModal,
     CreateTaskModal,
     TextAreaInput,
-    SelectInput
+    SelectInput,
+    Column
 }
