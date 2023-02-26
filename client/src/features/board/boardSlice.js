@@ -1,6 +1,7 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import {authFetch, checkForUnAuthorizedError} from "../../utils/axios";
 import {nanoid} from "nanoid";
+import {filterObject} from "../../utils/objectUtil";
 
 const initialIDs = [nanoid(), nanoid()];
 
@@ -14,12 +15,13 @@ const initialState = {
     boards: [],
 
     isEditing: false,
-    initialName: '',
-    initialValues: {
+    name: '',
+    nameError: false,
+    columns: {
         [initialIDs[0]]: '',
         [initialIDs[1]]: '',
     },
-    initialErrors: {
+    columnErrors: {
         [initialIDs[0]]: false,
         [initialIDs[1]]: false,
     }
@@ -70,9 +72,6 @@ const boardSlice = createSlice({
         showEditModal: (state) => {
             state.isEditBoardModalVisible = true;
         },
-        setAlertText: (state, action) => {
-            state.alertText = action.payload;
-        },
         closeEditModal: (state) => {
             state.isEditBoardModalVisible = false;
         },
@@ -88,6 +87,9 @@ const boardSlice = createSlice({
         closeDeleteModal: (state) => {
             state.isDeleteBoardModalVisible = false;
         },
+        setAlertText: (state, action) => {
+            state.alertText = action.payload;
+        },
         setActiveBoard: (state, action) => {
             if (action.payload === null) {
                 state.activeBoard = null;
@@ -96,20 +98,50 @@ const boardSlice = createSlice({
                 state.activeBoard = board;
             }
         },
+        setNameError: (state, action) => {
+            state.nameError = action.payload;
+        },
+        setColumnErrors: (state, action) => {
+            state.columnErrors = action.payload;
+        },
+        resetColumnErrors: (state) => {
+            Object.keys(state.columnErrors).forEach((key) => {
+                state.columnErrors[key] = false;
+            });
+        },
+        handleBoardChange: (state, action) => {
+            const {name, value} = action.payload;
+            state[name] = value;
+        },
+        handleColumnChange: (state, action) => {
+            const {name, value} = action.payload;
+            state.columns = {...state.columns, [name]: value};
+        },
+        addRow: (state) => {
+            const id = nanoid();
+            state.columns = {...state.columns, [id]: ''};
+            state.columnErrors = {...state.columnErrors, [id]: false};
+        },
+        removeRow: (state, action) => {
+            // remove the key/value pair from the object, for the selected Id
+            state.columns = filterObject(state.columns, action.payload);
+            state.columnErrors = filterObject(state.columnErrors, action.payload);
+        },
+        resetBoard: (state) => {
+            state.name = '';
+            state.columns = {
+                [initialIDs[0]]: '',
+                [initialIDs[1]]: '',
+            };
+            state.columnErrors = {
+                [initialIDs[0]]: false,
+                [initialIDs[1]]: false,
+            }
+        },
         setIsEditing: (state, action) => {
             state.isEditing = action.payload;
 
-            if (action.payload === false) {
-                state.initialName = '';
-                state.initialValues = {
-                    [initialIDs[0]]: '',
-                    [initialIDs[1]]: '',
-                };
-                state.initialErrors = {
-                    [initialIDs[0]]: false,
-                    [initialIDs[1]]: false,
-                }
-            } else {
+            if (action.payload === true) {
                 const ids = state.activeBoard.columns.map(() => nanoid());
                 const values = {};
                 const errors = {};
@@ -118,9 +150,9 @@ const boardSlice = createSlice({
                     errors[id] = false;
                 });
 
-                state.initialName = state.activeBoard.name;
-                state.initialValues = values;
-                state.initialErrors = errors;
+                state.name = state.activeBoard.name;
+                state.columns = values;
+                state.columnErrors = errors;
             }
         }
     },
@@ -131,8 +163,26 @@ const boardSlice = createSlice({
             state.isLoading = false;
             state.isCreateBoardModalVisible = false;
             state.boards = [...state.boards, action.payload.board];
+            state.name = '';
+            state.columns = {
+                [initialIDs[0]]: '',
+                [initialIDs[1]]: '',
+            };
+            state.columnErrors = {
+                [initialIDs[0]]: false,
+                [initialIDs[1]]: false,
+            }
         }).addCase(createBoard.rejected, (state) => {
             state.isLoading = false;
+            state.name = '';
+            state.columns = {
+                [initialIDs[0]]: '',
+                [initialIDs[1]]: '',
+            };
+            state.columnErrors = {
+                [initialIDs[0]]: false,
+                [initialIDs[1]]: false,
+            }
         }).addCase(getBoards.pending, (state) => {
             state.isLoading = true;
         }).addCase(getBoards.fulfilled, (state, action) => {
@@ -155,24 +205,24 @@ const boardSlice = createSlice({
             state.isCreateBoardModalVisible = false;
             state.activeBoard = action.payload.updatedBoard;
             state.isEditing = false;
-            state.initialName = '';
-            state.initialValues = {
+            state.name = '';
+            state.columns = {
                 [initialIDs[0]]: '',
                 [initialIDs[1]]: '',
             };
-            state.initialErrors = {
+            state.columnErrors = {
                 [initialIDs[0]]: false,
                 [initialIDs[1]]: false,
             }
         }).addCase(editBoard.rejected, (state) => {
             state.isLoading = false;
             state.isEditing = false;
-            state.initialName = '';
-            state.initialValues = {
+            state.name = '';
+            state.columns = {
                 [initialIDs[0]]: '',
                 [initialIDs[1]]: '',
             };
-            state.initialErrors = {
+            state.columnErrors = {
                 [initialIDs[0]]: false,
                 [initialIDs[1]]: false,
             }
@@ -184,12 +234,20 @@ export default boardSlice.reducer;
 
 export const {
     showEditModal,
-    setAlertText,
     closeEditModal,
     showCreateModal,
     closeCreateModal,
     showDeleteModal,
     closeDeleteModal,
+    setAlertText,
     setActiveBoard,
+    setNameError,
+    setColumnErrors,
+    resetColumnErrors,
+    handleBoardChange,
+    handleColumnChange,
+    addRow,
+    removeRow,
+    resetBoard,
     setIsEditing
 } = boardSlice.actions;

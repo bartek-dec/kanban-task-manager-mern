@@ -20,6 +20,11 @@ import UserModal from "./UserModal";
 import FormInputSmall from "./FormInputSmall";
 import CreateBoardModal from "./CreateBoardModal";
 import DeleteBoardModal from "./DeleteBoardModal";
+import CreateTaskModal from "./CreateTaskModal";
+import TextAreaInput from "./TextAreaInput";
+import SelectInput from "./SelectInput";
+import Column from "./Column";
+import Task from "./Task";
 
 export {
     Logo,
@@ -43,5 +48,10 @@ export {
     UserModal,
     FormInputSmall,
     CreateBoardModal,
-    DeleteBoardModal
+    DeleteBoardModal,
+    CreateTaskModal,
+    TextAreaInput,
+    SelectInput,
+    Column,
+    Task
 }

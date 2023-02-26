@@ -1,41 +1,41 @@
 import styled from "styled-components";
-import {Alert, FormInputSmall} from "./index";
+import {Alert, FormInputSmall, TextAreaInput, SelectInput} from "./index";
 import {
-    closeCreateModal, createBoard, setIsEditing, editBoard, setAlertText, setNameError, setColumnErrors,
-    resetColumnErrors, handleBoardChange, handleColumnChange, addRow, removeRow, resetBoard
-} from "../features/board/boardSlice";
+    closeTaskModal, setAlertText, setIsEditing, setTitleError, setSubtaskErrors, resetSubtaskErrors,
+    createTask, handleTaskChange, handleSubtaskChange, addRow, removeRow, resetTask
+} from "../features/task/taskSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
 import {HiPlusSm} from 'react-icons/hi';
 import {IoMdClose} from 'react-icons/io';
 
-const CreateBoardModal = () => {
+const CreateTaskModal = () => {
     const dispatch = useDispatch();
     const {
-        isCreateBoardModalVisible, isLoading, isEditing, activeBoard, alertText, name, nameError,
-        columns, columnErrors
-    } = useSelector((state) => state.board);
-
+        isTaskModalVisible, isLoading, isEditing, activeTask, alertText, title, titleError, description,
+        status, subtasks, subtaskErrors
+    } = useSelector((state) => state.task);
+    const {activeBoard} = useSelector((state) => state.board);
 
     useEffect(() => {
         // hide warnings after 3s
         const timeoutID = setTimeout(() => {
             dispatch(setAlertText(''));
-            dispatch(setNameError(false));
-            dispatch(resetColumnErrors());
+            dispatch(setTitleError(false));
+            dispatch(resetSubtaskErrors());
         }, 3000);
 
         return () => {
             clearTimeout(timeoutID);
         }
-    }, [nameError, columnErrors]);
+    }, [titleError, subtaskErrors]);
 
     const handleModalClick = (e) => {
         if (e.target.classList.contains('modal')) {
-            dispatch(closeCreateModal());
+            dispatch(closeTaskModal());
             setTimeout(() => {
                 dispatch(setIsEditing(false));
-                dispatch(resetBoard());
+                dispatch(resetTask());
             }, 150);
         }
     }
@@ -43,13 +43,13 @@ const CreateBoardModal = () => {
     const handleChange = (e) => {
         const name = e.target.name;
         const value = e.target.value;
-        dispatch(handleBoardChange({name, value}));
+        dispatch(handleTaskChange({name, value}));
     }
 
     const handleRowChange = (e) => {
         const name = e.target.name;
         const value = e.target.value;
-        dispatch(handleColumnChange({name, value}));
+        dispatch(handleSubtaskChange({name, value}));
     }
 
     const handleAddNewColumn = () => {
@@ -64,56 +64,61 @@ const CreateBoardModal = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        let emptyColumns = false;
-        const currentErrors = {...columnErrors};
+        let emptySubtask = false;
+        const currentErrors = {...subtaskErrors};
 
-        Object.entries(columns).forEach((item) => {
+        Object.entries(subtasks).forEach((item) => {
             const [id, value] = item;
             if (!value) {
                 currentErrors[id] = true;
-                emptyColumns = true;
+                emptySubtask = true;
             }
         });
 
         // check for errors
-        if ((!name && emptyColumns) || !name) {
-            dispatch(setNameError(true));
-            dispatch(setColumnErrors(currentErrors));
+        if ((!title && emptySubtask) || !title) {
+            dispatch(setTitleError(true));
+            dispatch(setSubtaskErrors(currentErrors));
             dispatch(setAlertText('Please provide all values'));
             return;
-        } else if (emptyColumns) {
-            dispatch(setColumnErrors(currentErrors));
+        } else if (emptySubtask) {
+            dispatch(setSubtaskErrors(currentErrors));
             dispatch(setAlertText('Please provide all values'));
             return;
         }
 
         if (isEditing) {
-            dispatch(editBoard({name, columns: Object.values(columns), id: activeBoard._id}));
+            //dispatch(editBoard({name, columns: Object.values(values), id: activeBoard._id}));
             return;
         }
 
-        dispatch(createBoard({name, columns: Object.values(columns)}));
+        //dispatch(createBoard({name, columns: Object.values(values)}));
+        dispatch(createTask({title, description, subtasks: Object.values(subtasks), status, boardId: activeBoard._id}));
     }
 
     return (
-        <Wrapper className={isCreateBoardModalVisible ? 'modal show-modal' : 'modal'} onClick={handleModalClick}>
+        <Wrapper className={isTaskModalVisible ? 'modal show-modal' : 'modal'} onClick={handleModalClick}>
             <form className='form-board' onSubmit={handleSubmit} noValidate>
 
-                <h2 className='small-header'>{isEditing ? 'Edit Board' : 'Add New Board'}</h2>
+                <h2 className='small-header'>{isEditing ? 'Edit Task' : 'Add New Task'}</h2>
 
                 {alertText && <Alert text={alertText}/>}
 
-                <FormInputSmall type='text' name='name' value={name} labelText='Name' handleChange={handleChange}
-                                error={nameError} label={true} placeholder='e.g Web Design'/>
+                <FormInputSmall type='text' name='title' value={title} labelText='Title' handleChange={handleChange}
+                                error={titleError} label={true} placeholder='e.g Take coffee break'/>
 
-                <p>Columns</p>
+                <TextAreaInput name='description' value={description} labelText='Description'
+                               handleChange={handleChange}/>
+
+                <p>Subtasks</p>
                 <div className='columns-container'>
 
-                    {Object.keys(columns).map((id) => {
+                    {Object.keys(subtasks).map((id) => {
                         return (
                             <div key={id} className='column'>
-                                <FormInputSmall type='text' name={id} value={columns[id]} placeholder='e.g Todo'
-                                                error={columnErrors[id]} labelText='Last Name'
+                                <FormInputSmall type='text' name={id} value={subtasks[id]}
+                                                placeholder='e.g Make a coffee'
+                                                error={subtaskErrors[id]} labelText='Last Name'
                                                 handleChange={handleRowChange}/>
 
                                 <button type='button' className='remove-btn' data-id={id} onClick={handleRemoveColumn}>
@@ -127,17 +132,21 @@ const CreateBoardModal = () => {
 
                 <button disabled={isLoading} type='button' className='btn new-board-btn column-btn'
                         onClick={handleAddNewColumn}>
-                    <HiPlusSm/> Add New Column
+                    <HiPlusSm/> Add New Subtask
                 </button>
+
+                <SelectInput name='status' value={status} handleChange={handleChange} labelText='Status'
+                             options={activeBoard?.columns}/>
+
                 <button disabled={isLoading} type='submit' className='btn new-board-btn create-board-btn'>
-                    {isEditing ? 'Edit Board' : 'Create New Board'}
+                    {isEditing ? 'Edit Task' : 'Create Task'}
                 </button>
             </form>
         </Wrapper>
     );
 };
 
-export default CreateBoardModal;
+export default CreateTaskModal;
 
 const Wrapper = styled.div`
 
