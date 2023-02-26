@@ -10,7 +10,7 @@ const initialState = {
     alertText: '',
     isLoading: false,
     activeTask: null,
-    tasks: [],
+    tasks: {},
 
     isEditing: false,
     title: '',
@@ -141,7 +141,14 @@ const taskSlice = createSlice({
         }).addCase(createTask.fulfilled, (state, action) => {
             state.isLoading = true;
             state.isTaskModalVisible = false;
-            state.tasks = [...state.tasks, action.payload.task];
+
+            const {status} = action.payload.task;
+            if (state.tasks[status]) {
+                state.tasks = {...state.tasks, [status]: [...state.tasks[status], action.payload.tasks]};
+            } else {
+                state.tasks = {...state.tasks, [status]: [action.payload.task]};
+            }
+
             state.title = '';
             state.description = '';
             state.status = '';
