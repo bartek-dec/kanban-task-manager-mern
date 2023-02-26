@@ -24,6 +24,7 @@ import CreateTaskModal from "./CreateTaskModal";
 import TextAreaInput from "./TextAreaInput";
 import SelectInput from "./SelectInput";
 import Column from "./Column";
+import Task from "./Task";
 
 export {
     Logo,
@@ -51,5 +52,6 @@ export {
     CreateTaskModal,
     TextAreaInput,
     SelectInput,
-    Column
+    Column,
+    Task
 }
