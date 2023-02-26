@@ -5,7 +5,7 @@ import {createTask, getTasks, updateTask, deleteTask} from "../controllers/taskC
 const router = express.Router();
 
 router.post('/', authenticateUser, createTask);
-router.get('/', authenticateUser, getTasks);
+router.post('/:id', authenticateUser, getTasks);
 router.patch('/:id', authenticateUser, updateTask);
 router.delete('/:id', authenticateUser, deleteTask);
 
