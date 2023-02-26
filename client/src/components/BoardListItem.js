@@ -2,6 +2,7 @@ import {TbLayoutBoardSplit} from 'react-icons/tb';
 import {useDispatch} from "react-redux";
 import {setActiveBoard} from "../features/board/boardSlice";
 import {closeSidebarModal} from '../features/sidebarSlice/sidebarSlice';
+import {getTasks} from "../features/task/taskSlice";
 import {NavLink} from "react-router-dom";
 
 const BoardListItem = ({title, id}) => {
@@ -9,6 +10,7 @@ const BoardListItem = ({title, id}) => {
 
     const handleClick = () => {
         dispatch(setActiveBoard(id));
+        dispatch(getTasks(id));
         dispatch(closeSidebarModal());
     }
 

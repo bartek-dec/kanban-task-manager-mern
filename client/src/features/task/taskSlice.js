@@ -43,6 +43,15 @@ export const createTask = createAsyncThunk('createTask', async (payload, thunkAP
     }
 });
 
+export const getTasks = createAsyncThunk('getTasks', async (boardId, thunkAPI) => {
+    try {
+        const {data} = await authFetch.post(`/tasks/${boardId}`);
+        return data;
+    } catch (error) {
+        return checkForUnAuthorizedError(error, thunkAPI);
+    }
+});
+
 const taskSlice = createSlice({
     name: 'taskSlice',
     initialState,
@@ -158,6 +167,14 @@ const taskSlice = createSlice({
                 [initialIDs[0]]: false,
                 [initialIDs[1]]: false,
             }
+        }).addCase(getTasks.pending, (state) => {
+            state.isLoading = true;
+        }).addCase(getTasks.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.tasks = action.payload.tasks;
+        }).addCase(getTasks.rejected, (state) => {
+            state.isLoading = false;
+            state.tasks = [];
         })
     }
 });

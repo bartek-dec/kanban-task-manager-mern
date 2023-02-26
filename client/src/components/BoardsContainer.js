@@ -3,6 +3,7 @@ import {useSelector, useDispatch} from "react-redux";
 import {BoardListItem, CreateBoardButton} from "./index";
 import {useEffect} from "react";
 import {getBoards, setActiveBoard} from "../features/board/boardSlice";
+import {handleTaskChange, getTasks} from "../features/task/taskSlice";
 import {useNavigate} from "react-router-dom";
 
 const BoardsContainer = () => {
@@ -15,10 +16,12 @@ const BoardsContainer = () => {
     }, []);
 
     useEffect(() => {
-        // navigate to active board on startup and set active board after deleting the previous one
+        // navigate to active board on startup and set active board after deleting one
         if (!activeBoard && boards.length > 0) {
             const {_id: id} = boards[0];
             dispatch(setActiveBoard(id));
+            dispatch(handleTaskChange({name: 'status', value: boards[0]?.columns?.[0]}));
+            dispatch(getTasks(id));
             navigate(`/${id}`);
         } else if (!activeBoard && boards.length === 0) {
             navigate('/');
