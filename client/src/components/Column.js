@@ -1,11 +1,15 @@
 import styled from "styled-components";
 import {getColor} from "../utils/columnColors";
-import React from "react";
+import {Task} from "./index";
 
 const Column = ({index, column, tasks}) => {
     return (
         <Wrapper>
-            <h3><span style={{backgroundColor: getColor(index)}}></span>{column} (3)</h3>
+            <h3><span style={{backgroundColor: getColor(index)}}></span>{column} ({tasks?.length || 0})</h3>
+
+            {tasks?.length > 0 && tasks.map((item, index) => {
+                return <Task key={index} item={item}/>
+            })}
         </Wrapper>
     );
 };
@@ -13,6 +17,9 @@ const Column = ({index, column, tasks}) => {
 export default Column;
 
 const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
 
   h3 {
     text-transform: uppercase;
@@ -20,6 +27,7 @@ const Wrapper = styled.div`
     font-weight: var(--font-weight-7);
     color: var(--Medium-Grey);
     letter-spacing: 3px;
+    margin-bottom: 0.5rem;
   }
 
   span {
@@ -29,5 +37,4 @@ const Wrapper = styled.div`
     border-radius: 50%;
     margin-right: 0.75rem;
   }
-
 `;
