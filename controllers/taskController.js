@@ -21,7 +21,20 @@ export const createTask = async (req, res) => {
 }
 
 export const getTasks = async (req, res) => {
-    return res.send('get tasks');
+    const {id: boardId} = req.params;
+
+    if (!boardId) {
+        throw new BadRequestError('Please provide board Id');
+    }
+
+    const board = await Board.findOne({_id: boardId});
+    if (!board) {
+        throw new NotFoundError(`No board with id: ${boardId}`);
+    }
+
+    const tasks = await Task.find({boardId});
+
+    return res.status(StatusCodes.OK).json({tasks});
 }
 
 export const updateTask = async (req, res) => {
