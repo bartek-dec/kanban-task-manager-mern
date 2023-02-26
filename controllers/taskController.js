@@ -32,7 +32,17 @@ export const getTasks = async (req, res) => {
         throw new NotFoundError(`No board with id: ${boardId}`);
     }
 
-    const tasks = await Task.find({boardId});
+    let tasks = await Task.find({boardId});
+
+    tasks = tasks.reduce((acc, curr) => {
+        if (acc[curr.status]) {
+            acc[curr.status] = [...acc[curr.status], curr];
+        }else {
+            acc[curr.status] = [curr];
+        }
+
+        return acc;
+    }, {});
 
     return res.status(StatusCodes.OK).json({tasks});
 }
