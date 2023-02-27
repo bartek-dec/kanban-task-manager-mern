@@ -35,10 +35,6 @@ const Wrapper = styled.button`
   align-items: center;
   justify-content: space-between;
 
-  .dots-icon {
-    stroke-width: 5;
-  }
-
   &:hover {
     color: var(--Main-Purple);
   }
