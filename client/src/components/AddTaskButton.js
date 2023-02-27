@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import {HiPlusSm} from 'react-icons/hi';
 import {useDispatch} from "react-redux";
-import {showTaskModal} from "../features/task/taskSlice";
+import {showCreateTaskModal} from "../features/task/taskSlice";
 
 const AddTaskButton = () => {
     const dispatch = useDispatch();
 
     const handleClick = () => {
-        dispatch(showTaskModal());
+        dispatch(showCreateTaskModal());
     }
 
     return (

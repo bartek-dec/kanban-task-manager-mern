@@ -6,7 +6,7 @@ import {authFetch, checkForUnAuthorizedError} from "../../utils/axios";
 const initialIDs = [nanoid(), nanoid()];
 
 const initialState = {
-    isTaskModalVisible: false,
+    isCreateTaskModalVisible: false,
     alertText: '',
     isLoading: false,
     activeTask: null,
@@ -39,7 +39,7 @@ export const createTask = createAsyncThunk('createTask', async (payload, thunkAP
         const {data} = await authFetch.post('/tasks', {title, description, status, subtasks: subtasksObjects, boardId});
         return data;
     } catch (error) {
-        return checkForUnAuthorizedError(error, thunkAPI, setAlertText, closeTaskModal);
+        return checkForUnAuthorizedError(error, thunkAPI, setAlertText, closeCreateTaskModal);
     }
 });
 
@@ -56,11 +56,11 @@ const taskSlice = createSlice({
     name: 'taskSlice',
     initialState,
     reducers: {
-        showTaskModal: (state) => {
-            state.isTaskModalVisible = true;
+        showCreateTaskModal: (state) => {
+            state.isCreateTaskModalVisible = true;
         },
-        closeTaskModal: (state) => {
-            state.isTaskModalVisible = false;
+        closeCreateTaskModal: (state) => {
+            state.isCreateTaskModalVisible = false;
         },
         setAlertText: (state, action) => {
             state.alertText = action.payload;
@@ -189,8 +189,8 @@ const taskSlice = createSlice({
 export default taskSlice.reducer;
 
 export const {
-    showTaskModal,
-    closeTaskModal,
+    showCreateTaskModal,
+    closeCreateTaskModal,
     setAlertText,
     setIsEditing,
     setTitleError,

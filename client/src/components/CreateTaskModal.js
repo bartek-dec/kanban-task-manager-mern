@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import {Alert, FormInputSmall, TextAreaInput, SelectInput} from "./index";
 import {
-    closeTaskModal, setAlertText, setIsEditing, setTitleError, setSubtaskErrors, resetSubtaskErrors,
+    closeCreateTaskModal, setAlertText, setIsEditing, setTitleError, setSubtaskErrors, resetSubtaskErrors,
     createTask, handleTaskChange, handleSubtaskChange, addRow, removeRow, resetTask
 } from "../features/task/taskSlice";
 import {useDispatch, useSelector} from "react-redux";
@@ -12,7 +12,7 @@ import {IoMdClose} from 'react-icons/io';
 const CreateTaskModal = () => {
     const dispatch = useDispatch();
     const {
-        isTaskModalVisible, isLoading, isEditing, activeTask, alertText, title, titleError, description,
+        isCreateTaskModalVisible, isLoading, isEditing, activeTask, alertText, title, titleError, description,
         status, subtasks, subtaskErrors
     } = useSelector((state) => state.task);
     const {activeBoard} = useSelector((state) => state.board);
@@ -32,7 +32,7 @@ const CreateTaskModal = () => {
 
     const handleModalClick = (e) => {
         if (e.target.classList.contains('modal')) {
-            dispatch(closeTaskModal());
+            dispatch(closeCreateTaskModal());
             setTimeout(() => {
                 dispatch(setIsEditing(false));
                 dispatch(resetTask());
@@ -97,7 +97,7 @@ const CreateTaskModal = () => {
     }
 
     return (
-        <Wrapper className={isTaskModalVisible ? 'modal show-modal' : 'modal'} onClick={handleModalClick}>
+        <Wrapper className={isCreateTaskModalVisible ? 'modal show-modal' : 'modal'} onClick={handleModalClick}>
             <form className='form-board' onSubmit={handleSubmit} noValidate>
 
                 <h2 className='small-header'>{isEditing ? 'Edit Task' : 'Add New Task'}</h2>
