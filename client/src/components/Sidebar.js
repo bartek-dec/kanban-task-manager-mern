@@ -1,12 +1,7 @@
 import styled from "styled-components";
 import {
-    ToggleTheme,
-    HideButton,
-    ShowButton,
-    UserButton,
-    BoardsContainer,
-    UserModal,
-    CreateBoardModal, LogoutModal, EditBoardModal, DeleteBoardModal, SidebarModal, CreateTaskModal
+    ToggleTheme, HideButton, ShowButton, UserButton, BoardsContainer, UserModal, CreateBoardModal, LogoutModal,
+    EditBoardModal, DeleteBoardModal, SidebarModal, CreateTaskModal, TaskModal, EditTaskModal
 } from '../components';
 import {useSelector} from "react-redux";
 
@@ -35,6 +30,8 @@ const Sidebar = () => {
             <DeleteBoardModal/>
             <SidebarModal/>
             <CreateTaskModal/>
+            <TaskModal/>
+            <EditTaskModal/>
         </Wrapper>
     );
 };
@@ -49,7 +46,7 @@ const Wrapper = styled.aside`
     background-color: var(--Sidebar-Background-Color);
     margin-left: -18rem;
     transition: var(--transition);
-    
+
     position: sticky;
     top: var(--Navbar-Height);
   }
