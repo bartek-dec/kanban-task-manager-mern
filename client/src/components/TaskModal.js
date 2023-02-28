@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import {useSelector, useDispatch} from "react-redux";
 import {
-    closeTaskModal, handleTaskChange, handleSubtaskChange, setActiveTask, setStatus, updateTask
+    closeTaskModal, handleTaskChange, handleSubtaskChange, setActiveTask, setStatus, updateTask, showEditTaskModal
 } from "../features/task/taskSlice";
 import {BsDot} from 'react-icons/bs';
 import {countCompletedSubtasks} from "../utils/objectUtil";
@@ -44,7 +44,7 @@ const TaskModal = () => {
             <form className='task-container' onSubmit={handleSubmit}>
                 <section>
                     <h4 className='task-header'>{activeTask?.title}</h4>
-                    <button type='button' className='btn-edit-task'>
+                    <button type='button' className='btn-edit-task' onClick={() => dispatch(showEditTaskModal())}>
                         <BsDot className='dots-icon'/>
                         <BsDot className='dots-icon'/>
                         <BsDot className='dots-icon'/>
