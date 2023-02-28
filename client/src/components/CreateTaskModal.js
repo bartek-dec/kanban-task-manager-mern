@@ -2,7 +2,7 @@ import styled from "styled-components";
 import {Alert, FormInputSmall, TextAreaInput, SelectInput} from "./index";
 import {
     closeCreateTaskModal, setAlertText, setIsEditing, setTitleError, setSubtaskErrors, resetSubtaskErrors,
-    createTask, handleTaskChange, handleSubtaskChange, addRow, removeRow, resetTask
+    createTask, updateTask, handleTaskChange, handleSubtaskChange, addRow, removeRow, resetTask
 } from "../features/task/taskSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
@@ -67,13 +67,14 @@ const CreateTaskModal = () => {
         let emptySubtask = false;
         const currentErrors = {...subtaskErrors};
 
-        Object.entries(subtasks).forEach((item) => {
-            const [id, value] = item;
+        // checks every required field and assigns error for the corresponding empty field
+        subtasks.forEach((item) => {
+            const [id, value] = Object.entries(item)[0];
             if (!value) {
                 currentErrors[id] = true;
                 emptySubtask = true;
             }
-        });
+        })
 
         // check for errors
         if ((!title && emptySubtask) || !title) {
@@ -88,12 +89,11 @@ const CreateTaskModal = () => {
         }
 
         if (isEditing) {
-            //dispatch(editBoard({name, columns: Object.values(values), id: activeBoard._id}));
+            dispatch(updateTask({_id: activeTask._id, title, description, subtasks, status, boardId: activeBoard._id}));
             return;
         }
 
-        //dispatch(createBoard({name, columns: Object.values(values)}));
-        dispatch(createTask({title, description, subtasks: Object.values(subtasks), status, boardId: activeBoard._id}));
+        dispatch(createTask({title, description, subtasks, status, boardId: activeBoard._id}));
     }
 
     return (
@@ -113,10 +113,11 @@ const CreateTaskModal = () => {
                 <p>Subtasks</p>
                 <div className='columns-container'>
 
-                    {Object.keys(subtasks).map((id) => {
+                    {subtasks.map((item) => {
+                        const id = Object.keys(item)[0];
                         return (
                             <div key={id} className='column'>
-                                <FormInputSmall type='text' name={id} value={subtasks[id]}
+                                <FormInputSmall type='text' name={id} value={item[id]}
                                                 placeholder='e.g Make a coffee'
                                                 error={subtaskErrors[id]} labelText='Last Name'
                                                 handleChange={handleRowChange}/>
