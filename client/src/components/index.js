@@ -27,6 +27,7 @@ import Column from "./Column";
 import Task from "./Task";
 import TaskModal from "./TaskModal";
 import CheckboxInput from "./CheckboxInput";
+import EditTaskModal from "./EditTaskModal";
 
 export {
     Logo,
@@ -57,5 +58,6 @@ export {
     Column,
     Task,
     TaskModal,
-    CheckboxInput
+    CheckboxInput,
+    EditTaskModal
 }
