@@ -25,7 +25,7 @@ const DeleteBoardModal = () => {
     return (
         <Wrapper className={isDeleteBoardModalVisible ? 'modal show-modal' : 'modal'} onClick={handleModalClick}>
             <div>
-                <h2>{alertText ? 'Unauthorized! Logging out...' : 'Delete this task?'}</h2>
+                <h2>{alertText ? 'Unauthorized! Logging out...' : 'Delete this board?'}</h2>
                 <p>Are you sure you want to delete the "<span>{activeBoard?.name}</span>" board? This action will remove
                     all the columns and tasks and cannot be undone.</p>
                 <section>
