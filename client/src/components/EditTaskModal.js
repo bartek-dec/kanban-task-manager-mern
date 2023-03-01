@@ -1,6 +1,12 @@
 import styled from "styled-components";
 import {useSelector, useDispatch} from "react-redux";
-import {closeTaskModal, closeEditTaskModal, setIsEditing, showCreateTaskModal} from "../features/task/taskSlice";
+import {
+    closeTaskModal,
+    closeEditTaskModal,
+    setIsEditing,
+    showCreateTaskModal,
+    showDeleteTaskModal
+} from "../features/task/taskSlice";
 
 const EditTaskModal = () => {
     const {isEditTaskModalVisible} = useSelector((state) => state.task);
@@ -23,7 +29,7 @@ const EditTaskModal = () => {
     const handleDelete = () => {
         dispatch(closeTaskModal());
         dispatch(closeEditTaskModal());
-        //open delete modal
+        dispatch(showDeleteTaskModal());
     }
 
     return (
