@@ -80,8 +80,9 @@ const userSlice = createSlice({
             state.token = token;
             state.isLoading = false;
             addUserToLocalStorage({user, token});
-        }).addCase(loginUser.rejected, (state) => {
+        }).addCase(loginUser.rejected, (state, action) => {
             state.isLoading = false;
+            state.alertText = action.payload;
         }).addCase(updateUser.pending, (state) => {
             state.isLoading = true;
         }).addCase(updateUser.fulfilled, (state, action) => {
