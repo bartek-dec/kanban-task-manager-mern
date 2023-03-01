@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import {Alert, FormInputSmall, TextAreaInput, SelectInput} from "./index";
 import {
-    closeTaskModal, setAlertText, setIsEditing, setTitleError, setSubtaskErrors, resetSubtaskErrors,
-    createTask, handleTaskChange, handleSubtaskChange, addRow, removeRow, resetTask
+    closeCreateTaskModal, setAlertText, setIsEditing, setTitleError, setSubtaskErrors, resetSubtaskErrors,
+    createTask, updateTask, handleTaskChange, handleSubtaskChange, addRow, removeRow, resetTask
 } from "../features/task/taskSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
@@ -12,7 +12,7 @@ import {IoMdClose} from 'react-icons/io';
 const CreateTaskModal = () => {
     const dispatch = useDispatch();
     const {
-        isTaskModalVisible, isLoading, isEditing, activeTask, alertText, title, titleError, description,
+        isCreateTaskModalVisible, isLoading, isEditing, activeTask, alertText, title, titleError, description,
         status, subtasks, subtaskErrors
     } = useSelector((state) => state.task);
     const {activeBoard} = useSelector((state) => state.board);
@@ -32,10 +32,10 @@ const CreateTaskModal = () => {
 
     const handleModalClick = (e) => {
         if (e.target.classList.contains('modal')) {
-            dispatch(closeTaskModal());
+            dispatch(closeCreateTaskModal());
             setTimeout(() => {
                 dispatch(setIsEditing(false));
-                dispatch(resetTask());
+                dispatch(resetTask(activeBoard?.columns[0]));
             }, 150);
         }
     }
@@ -67,13 +67,14 @@ const CreateTaskModal = () => {
         let emptySubtask = false;
         const currentErrors = {...subtaskErrors};
 
-        Object.entries(subtasks).forEach((item) => {
-            const [id, value] = item;
+        // checks every required field and assigns error for the corresponding empty field
+        subtasks.forEach((item) => {
+            const [id, value] = Object.entries(item)[0];
             if (!value) {
                 currentErrors[id] = true;
                 emptySubtask = true;
             }
-        });
+        })
 
         // check for errors
         if ((!title && emptySubtask) || !title) {
@@ -88,16 +89,15 @@ const CreateTaskModal = () => {
         }
 
         if (isEditing) {
-            //dispatch(editBoard({name, columns: Object.values(values), id: activeBoard._id}));
+            dispatch(updateTask({_id: activeTask._id, title, description, subtasks, status, boardId: activeBoard._id}));
             return;
         }
 
-        //dispatch(createBoard({name, columns: Object.values(values)}));
-        dispatch(createTask({title, description, subtasks: Object.values(subtasks), status, boardId: activeBoard._id}));
+        dispatch(createTask({title, description, subtasks, status, boardId: activeBoard._id}));
     }
 
     return (
-        <Wrapper className={isTaskModalVisible ? 'modal show-modal' : 'modal'} onClick={handleModalClick}>
+        <Wrapper className={isCreateTaskModalVisible ? 'modal show-modal' : 'modal'} onClick={handleModalClick}>
             <form className='form-board' onSubmit={handleSubmit} noValidate>
 
                 <h2 className='small-header'>{isEditing ? 'Edit Task' : 'Add New Task'}</h2>
@@ -113,10 +113,11 @@ const CreateTaskModal = () => {
                 <p>Subtasks</p>
                 <div className='columns-container'>
 
-                    {Object.keys(subtasks).map((id) => {
+                    {subtasks.map((item) => {
+                        const id = Object.keys(item)[0];
                         return (
                             <div key={id} className='column'>
-                                <FormInputSmall type='text' name={id} value={subtasks[id]}
+                                <FormInputSmall type='text' name={id} value={item[id]}
                                                 placeholder='e.g Make a coffee'
                                                 error={subtaskErrors[id]} labelText='Last Name'
                                                 handleChange={handleRowChange}/>

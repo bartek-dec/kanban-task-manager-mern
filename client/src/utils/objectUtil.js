@@ -12,3 +12,13 @@ export const filterObject = (obj, id) => {
 
     return remainEntries;
 }
+
+export const countCompletedSubtasks = (arr) => {
+    return arr?.reduce((acc, curr) => {
+        const {isCompleted} = curr;
+        if (isCompleted) {
+            return acc + 1;
+        }
+        return acc;
+    }, 0)
+}

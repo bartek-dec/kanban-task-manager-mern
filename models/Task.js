@@ -27,6 +27,11 @@ const TaskSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: 'Board',
         required: [true, 'Please provide a board ID']
+    },
+    userId: {
+        type: mongoose.Types.ObjectId,
+        ref: 'User',
+        required: [true, 'Please provide a user ID']
     }
 }, {
     timestamps: true

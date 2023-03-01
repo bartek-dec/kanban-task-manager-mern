@@ -1,22 +1,22 @@
 import styled from "styled-components";
+import {useDispatch} from "react-redux";
+import {showTaskModal, setActiveTask, setStatus} from "../features/task/taskSlice";
+import {countCompletedSubtasks} from "../utils/objectUtil";
 
 const Task = ({item}) => {
     const {title, subtasks} = item;
+    const dispatch = useDispatch();
 
-    const countCompleted = () => {
-        return subtasks?.reduce((acc, curr) => {
-            const {isCompleted} = curr;
-            if (isCompleted) {
-                return acc + 1;
-            }
-            return acc;
-        }, 0)
+    const handleClick = () => {
+        dispatch(setActiveTask(item));
+        dispatch(showTaskModal());
+        dispatch(setStatus(item.status))
     }
 
     return (
-        <Wrapper>
+        <Wrapper onClick={handleClick}>
             <h3>{title}</h3>
-            <h4>{countCompleted()} of {subtasks?.length} subtasks</h4>
+            <h4>{countCompletedSubtasks(subtasks)} of {subtasks?.length} subtasks</h4>
         </Wrapper>
     );
 };
@@ -41,7 +41,7 @@ const Wrapper = styled.article`
     color: var(--Medium-Grey);
   }
 
-  :hover h3 {
+  &:hover h3 {
     color: var(--Main-Purple);
   }
 `;

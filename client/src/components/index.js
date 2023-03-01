@@ -25,6 +25,10 @@ import TextAreaInput from "./TextAreaInput";
 import SelectInput from "./SelectInput";
 import Column from "./Column";
 import Task from "./Task";
+import TaskModal from "./TaskModal";
+import CheckboxInput from "./CheckboxInput";
+import EditTaskModal from "./EditTaskModal";
+import DeleteTaskModal from "./DeleteTaskModal";
 
 export {
     Logo,
@@ -53,5 +57,9 @@ export {
     TextAreaInput,
     SelectInput,
     Column,
-    Task
+    Task,
+    TaskModal,
+    CheckboxInput,
+    EditTaskModal,
+    DeleteTaskModal
 }

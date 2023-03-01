@@ -1,33 +1,31 @@
 import styled from "styled-components";
-import {useDispatch, useSelector} from "react-redux";
-import {closeDeleteModal, deleteBoard} from "../features/board/boardSlice";
-import {useParams} from "react-router-dom";
+import {useSelector, useDispatch} from "react-redux";
+import {closeDeleteTaskModal, deleteTask} from "../features/task/taskSlice";
 
-const DeleteBoardModal = () => {
-    const {isDeleteBoardModalVisible, activeBoard, isLoading, alertText} = useSelector((state) => state.board);
+const DeleteTaskModal = () => {
+    const {isDeleteTaskModalVisible, activeTask, alertText, isLoading} = useSelector((state) => state.task);
     const dispatch = useDispatch();
-    const {id} = useParams();
 
     const handleModalClick = (e) => {
         if (e.target.classList.contains('modal')) {
-            dispatch(closeDeleteModal());
+            dispatch(closeDeleteTaskModal());
         }
     }
 
     const handleCancel = () => {
-        dispatch(closeDeleteModal());
+        dispatch(closeDeleteTaskModal());
     }
 
     const handleDelete = () => {
-        dispatch(deleteBoard(id));
+        dispatch(deleteTask({id: activeTask._id, boardId: activeTask.boardId}));
     }
 
     return (
-        <Wrapper className={isDeleteBoardModalVisible ? 'modal show-modal' : 'modal'} onClick={handleModalClick}>
+        <Wrapper className={isDeleteTaskModalVisible ? 'modal show-modal' : 'modal'} onClick={handleModalClick}>
             <div>
-                <h2>{alertText ? 'Unauthorized! Logging out...' : 'Delete this board?'}</h2>
-                <p>Are you sure you want to delete the "<span>{activeBoard?.name}</span>" board? This action will remove
-                    all the columns and tasks and cannot be undone.</p>
+                <h2>{alertText ? 'Unauthorized! Logging out...' : 'Delete this task?'}</h2>
+                <p>Are you sure you want to delete the "<span>{activeTask?.title}</span>" task? This action will remove
+                    the task and cannot be undone.</p>
                 <section>
                     <button disabled={isLoading} type='button' className='delete' onClick={handleDelete}>Delete</button>
                     <button type='button' className='cancel' onClick={handleCancel}>Cancel</button>
@@ -37,7 +35,7 @@ const DeleteBoardModal = () => {
     );
 };
 
-export default DeleteBoardModal;
+export default DeleteTaskModal;
 
 const Wrapper = styled.div`
   div {
