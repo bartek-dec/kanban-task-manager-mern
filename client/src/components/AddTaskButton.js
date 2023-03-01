@@ -1,13 +1,16 @@
 import styled from "styled-components";
 import {HiPlusSm} from 'react-icons/hi';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {showCreateTaskModal} from "../features/task/taskSlice";
 
 const AddTaskButton = () => {
+    const {activeBoard} = useSelector((state) => state.board);
     const dispatch = useDispatch();
 
     const handleClick = () => {
-        dispatch(showCreateTaskModal());
+        if (activeBoard?.columns.length > 0) {
+            dispatch(showCreateTaskModal());
+        }
     }
 
     return (
