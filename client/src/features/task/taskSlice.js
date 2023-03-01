@@ -9,6 +9,7 @@ const initialState = {
     isCreateTaskModalVisible: false,
     isTaskModalVisible: false,
     isEditTaskModalVisible: false,
+    isDeleteTaskModalVisible: false,
     alertText: '',
     isLoading: false,
     activeTask: null,
@@ -81,7 +82,17 @@ export const updateTask = createAsyncThunk('updateTask', async (payload, thunkAP
     } catch (error) {
         return checkForUnAuthorizedError(error, thunkAPI, setAlertText, closeTaskModal);
     }
-})
+});
+
+export const deleteTask = createAsyncThunk('deleteTask', async (payload, thunkAPI) => {
+    try {
+        const {id, boardId} = payload;
+        await authFetch.delete(`/tasks/${id}`);
+        thunkAPI.dispatch(getTasks(boardId));
+    } catch (error) {
+        return checkForUnAuthorizedError(error, thunkAPI, setAlertText, closeDeleteTaskModal);
+    }
+});
 
 const taskSlice = createSlice({
     name: 'taskSlice',
@@ -104,6 +115,12 @@ const taskSlice = createSlice({
         },
         closeEditTaskModal: (state) => {
             state.isEditTaskModalVisible = false;
+        },
+        showDeleteTaskModal: (state) => {
+            state.isDeleteTaskModalVisible = true;
+        },
+        closeDeleteTaskModal: (state) => {
+            state.isDeleteTaskModalVisible = false;
         },
         setAlertText: (state, action) => {
             state.alertText = action.payload;
@@ -270,6 +287,7 @@ const taskSlice = createSlice({
             state.isLoading = true;
         }).addCase(updateTask.fulfilled, (state) => {
             state.isLoading = false;
+            state.isEditing = false;
             state.isTaskModalVisible = false;
             state.isCreateTaskModalVisible = false;
             state.activeTask = null;
@@ -310,6 +328,14 @@ const taskSlice = createSlice({
                 [initialIDs[0]]: false,
                 [initialIDs[1]]: false,
             }
+        }).addCase(deleteTask.pending, (state) => {
+            state.isLoading = true;
+        }).addCase(deleteTask.fulfilled, (state) => {
+            state.isLoading = false;
+            state.activeTask = null;
+            state.isDeleteTaskModalVisible = false;
+        }).addCase(deleteTask.rejected, (state) => {
+            state.isLoading = false;
         })
     }
 });
@@ -323,6 +349,8 @@ export const {
     closeTaskModal,
     showEditTaskModal,
     closeEditTaskModal,
+    showDeleteTaskModal,
+    closeDeleteTaskModal,
     setAlertText,
     setActiveTask,
     setIsEditing,
