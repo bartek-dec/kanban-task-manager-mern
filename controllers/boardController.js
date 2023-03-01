@@ -1,4 +1,5 @@
 import Board from "../models/Board.js";
+import Task from "../models/Task.js";
 import {StatusCodes} from "http-status-codes";
 import {BadRequestError, NotFoundError} from "../errors/index.js";
 import {checkPermissions} from "../utils/checkPermissions.js";
@@ -49,6 +50,7 @@ export const deleteBoard = async (req, res) => {
 
     checkPermissions(req.user, board.createdBy);
     await board.remove();
+    await Task.deleteMany({boardId});
 
     return res.status(StatusCodes.OK).json({msg: 'Success! Board removed'});
 }
