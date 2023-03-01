@@ -18,6 +18,7 @@ export const createTask = async (req, res) => {
 
     checkPermissions(req.user, board.createdBy);
 
+    req.body.userId = req.user.userId;
     const task = await Task.create(req.body);
 
     return res.status(StatusCodes.CREATED).json({task});
@@ -61,11 +62,16 @@ export const updateTask = async (req, res) => {
         throw new NotFoundError(`No board with Id: ${boardId}`);
     }
 
-    checkPermissions(req.user, board.createdBy);
-
     if (!taskId) {
         throw new BadRequestError('Please provide task Id')
     }
+
+    const task = await Task.findOne({_id: taskId});
+    if (!task) {
+        throw new NotFoundError(`No task with Id: ${taskId}`)
+    }
+
+    checkPermissions(req.user, task.userId);
 
     const updatedTask = await Task.findOneAndUpdate({_id: taskId}, req.body, {new: true});
 
@@ -73,5 +79,15 @@ export const updateTask = async (req, res) => {
 }
 
 export const deleteTask = async (req, res) => {
-    return res.send('delete task');
+    const {id: taskId} = req.params;
+
+    const task = await Task.findOne({_id: taskId});
+    if (!task) {
+        throw new NotFoundError(`No task with Id: ${taskId}`)
+    }
+
+    checkPermissions(req.user, task.userId);
+    await task.remove();
+
+    return res.status(StatusCodes.OK).json({msg: 'Success! Task removed'});
 }
