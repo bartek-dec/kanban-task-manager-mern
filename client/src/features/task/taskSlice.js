@@ -181,10 +181,10 @@ const taskSlice = createSlice({
             state.subtasks = state.subtasks.filter((item) => Object.keys(item)[0] !== action.payload);
             state.subtaskErrors = filterObject(state.subtaskErrors, action.payload);
         },
-        resetTask: (state) => {
+        resetTask: (state, action) => {
             state.title = '';
             state.description = '';
-            state.status = '';
+            state.status = action.payload;
             state.subtasks = [
                 {
                     [initialIDs[0]]: '',
@@ -240,7 +240,6 @@ const taskSlice = createSlice({
 
             state.title = '';
             state.description = '';
-            state.status = '';
             state.subtasks = [
                 {
                     [initialIDs[0]]: '',
@@ -260,7 +259,6 @@ const taskSlice = createSlice({
             state.alertText = action.payload;
             state.title = '';
             state.description = '';
-            state.status = '';
             state.subtasks = [
                 {
                     [initialIDs[0]]: '',
@@ -293,7 +291,6 @@ const taskSlice = createSlice({
             state.activeTask = null;
             state.title = '';
             state.description = '';
-            state.status = '';
             state.subtasks = [
                 {
                     [initialIDs[0]]: '',
@@ -313,7 +310,6 @@ const taskSlice = createSlice({
             state.activeTask = null;
             state.title = '';
             state.description = '';
-            state.status = '';
             state.subtasks = [
                 {
                     [initialIDs[0]]: '',

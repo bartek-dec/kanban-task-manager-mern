@@ -35,7 +35,7 @@ const CreateTaskModal = () => {
             dispatch(closeCreateTaskModal());
             setTimeout(() => {
                 dispatch(setIsEditing(false));
-                dispatch(resetTask());
+                dispatch(resetTask(activeBoard?.columns[0]));
             }, 150);
         }
     }
