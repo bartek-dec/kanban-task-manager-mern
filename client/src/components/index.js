@@ -28,6 +28,7 @@ import Task from "./Task";
 import TaskModal from "./TaskModal";
 import CheckboxInput from "./CheckboxInput";
 import EditTaskModal from "./EditTaskModal";
+import DeleteTaskModal from "./DeleteTaskModal";
 
 export {
     Logo,
@@ -59,5 +60,6 @@ export {
     Task,
     TaskModal,
     CheckboxInput,
-    EditTaskModal
+    EditTaskModal,
+    DeleteTaskModal
 }

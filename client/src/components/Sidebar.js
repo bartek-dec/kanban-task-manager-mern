@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import {
     ToggleTheme, HideButton, ShowButton, UserButton, BoardsContainer, UserModal, CreateBoardModal, LogoutModal,
-    EditBoardModal, DeleteBoardModal, SidebarModal, CreateTaskModal, TaskModal, EditTaskModal
+    EditBoardModal, DeleteBoardModal, SidebarModal, CreateTaskModal, TaskModal, EditTaskModal, DeleteTaskModal
 } from '../components';
 import {useSelector} from "react-redux";
 
@@ -32,6 +32,7 @@ const Sidebar = () => {
             <CreateTaskModal/>
             <TaskModal/>
             <EditTaskModal/>
+            <DeleteTaskModal/>
         </Wrapper>
     );
 };
