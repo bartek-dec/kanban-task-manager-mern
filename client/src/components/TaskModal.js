@@ -17,7 +17,7 @@ const TaskModal = () => {
         if (e.target.classList.contains('modal')) {
             dispatch(closeTaskModal());
             dispatch(setActiveTask(null));
-            dispatch(setStatus(''));
+            dispatch(setStatus(activeBoard?.columns[0]));
         }
     }
 
