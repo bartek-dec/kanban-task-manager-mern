@@ -25,8 +25,8 @@ categories (board), subcategories (columns), and tasks per subcategory in order 
 ## Setup/Installation Requirements
 
 * Clone this repository to your development environment
-* Navigate to the root directory of the application and execute "npm run install" to install the dependencies
-* Navigate to the client directory of the application and execute "npm run install" to install the dependencies
+* Navigate to the root directory of the application and execute "npm install" to install the dependencies
+* Navigate to the client directory of the application and execute "npm install" to install the dependencies
 * Navigate to the root directory, create .env file and provide values for the following variables: 
   - PORT=
   - DB_URL= 
