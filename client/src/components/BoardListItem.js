@@ -11,7 +11,7 @@ const BoardListItem = ({title, id}) => {
     const {activeBoard} = useSelector((state) => state.board);
 
     useEffect(() => {
-        dispatch(handleTaskChange({name: 'status', value: activeBoard?.columns?.[0]}));
+        dispatch(handleTaskChange({name: 'status', value: activeBoard?.columns?.[0]?.column}));
     }, [activeBoard]);
 
     const handleClick = () => {

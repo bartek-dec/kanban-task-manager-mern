@@ -17,7 +17,7 @@ const TaskModal = () => {
         if (e.target.classList.contains('modal')) {
             dispatch(closeTaskModal());
             dispatch(setActiveTask(null));
-            dispatch(setStatus(''));
+            dispatch(setStatus(activeBoard?.columns[0].column));
         }
     }
 
@@ -63,7 +63,7 @@ const TaskModal = () => {
                 </div>
 
                 <SelectInput className='select' name='status' value={status} handleChange={handleChange}
-                             labelText='Current Status' options={activeBoard?.columns}/>
+                             labelText='Current Status' options={activeBoard?.columns.map((item) => item.column)}/>
 
                 <button type='submit' className='btn-confirm'>Confirm</button>
 

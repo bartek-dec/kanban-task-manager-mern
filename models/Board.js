@@ -6,7 +6,11 @@ const BoardSchema = new mongoose.Schema({
             required: [true, 'Please provide a name']
         },
         columns: {
-            type: [String]
+            type: [{
+                column: {
+                    type: String,
+                }
+            }]
         },
         createdBy: {
             type: mongoose.Types.ObjectId,

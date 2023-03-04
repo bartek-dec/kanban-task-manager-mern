@@ -17,10 +17,10 @@ const initialState = {
     isEditing: false,
     name: '',
     nameError: false,
-    columns: {
-        [initialIDs[0]]: '',
-        [initialIDs[1]]: '',
-    },
+    columns: [
+        {[initialIDs[0]]: ''},
+        {[initialIDs[1]]: '',}
+    ],
     columnErrors: {
         [initialIDs[0]]: false,
         [initialIDs[1]]: false,
@@ -29,7 +29,13 @@ const initialState = {
 
 export const createBoard = createAsyncThunk('createBoard', async (payload, thunkAPI) => {
     try {
-        const {data} = await authFetch.post('/boards', payload);
+        const {name, columns} = payload;
+
+        // converts columns received from the form to the objects that reflect Board model schema
+        const columnsObjects = columns.map((item) => {
+            return {column: Object.values(item)[0]}
+        });
+        const {data} = await authFetch.post('/boards', {name, columns: columnsObjects});
         return data;
     } catch (error) {
         return checkForUnAuthorizedError(error, thunkAPI, setAlertText, closeCreateModal);
@@ -57,13 +63,22 @@ export const deleteBoard = createAsyncThunk('deleteBoard', async (id, thunkAPI) 
 export const editBoard = createAsyncThunk('editBoard', async (payload, thunkAPI) => {
     try {
         const {id, name, columns} = payload;
-        const {data} = await authFetch.patch(`boards/${id}`, {name, columns});
+
+        // converts columns received from the form to the objects that reflect Board model schema
+        const columnsObjects = columns.map((item) => {
+            return {
+                column: Object.values(item)[0],
+                _id: Object.values(item)[1]
+            }
+        });
+
+        const {data} = await authFetch.patch(`boards/${id}`, {name, columns: columnsObjects});
         thunkAPI.dispatch(getBoards());
         return data;
     } catch (error) {
         return checkForUnAuthorizedError(error, thunkAPI, setAlertText, closeCreateModal);
     }
-})
+});
 
 const boardSlice = createSlice({
     name: 'boardSlice',
@@ -115,24 +130,32 @@ const boardSlice = createSlice({
         },
         handleColumnChange: (state, action) => {
             const {name, value} = action.payload;
-            state.columns = {...state.columns, [name]: value};
+
+            const columns = state.columns;
+            columns.forEach((item) => {
+                const prop = Object.keys(item)[0];
+                if (prop === name) {
+                    item[prop] = value;
+                }
+            })
+            state.columns = [...columns];
         },
         addRow: (state) => {
             const id = nanoid();
-            state.columns = {...state.columns, [id]: ''};
+            state.columns = [...state.columns, {[id]: ''}];
             state.columnErrors = {...state.columnErrors, [id]: false};
         },
         removeRow: (state, action) => {
             // remove the key/value pair from the object, for the selected Id
-            state.columns = filterObject(state.columns, action.payload);
+            state.columns = state.columns.filter((item) => Object.keys(item)[0] !== action.payload)
             state.columnErrors = filterObject(state.columnErrors, action.payload);
         },
         resetBoard: (state) => {
             state.name = '';
-            state.columns = {
-                [initialIDs[0]]: '',
-                [initialIDs[1]]: '',
-            };
+            state.columns = [
+                {[initialIDs[0]]: ''},
+                {[initialIDs[1]]: '',}
+            ];
             state.columnErrors = {
                 [initialIDs[0]]: false,
                 [initialIDs[1]]: false,
@@ -143,10 +166,11 @@ const boardSlice = createSlice({
 
             if (action.payload === true) {
                 const ids = state.activeBoard.columns.map(() => nanoid());
-                const values = {};
+                const values = [];
                 const errors = {};
                 ids.forEach((id, index) => {
-                    values[id] = state.activeBoard.columns[index];
+                    const {column, _id} = state.activeBoard.columns[index];
+                    values.push({[id]: column, _id});
                     errors[id] = false;
                 });
 
@@ -164,10 +188,10 @@ const boardSlice = createSlice({
             state.isCreateBoardModalVisible = false;
             state.boards = [...state.boards, action.payload.board];
             state.name = '';
-            state.columns = {
-                [initialIDs[0]]: '',
-                [initialIDs[1]]: '',
-            };
+            state.columns = [
+                {[initialIDs[0]]: ''},
+                {[initialIDs[1]]: '',}
+            ];
             state.columnErrors = {
                 [initialIDs[0]]: false,
                 [initialIDs[1]]: false,
@@ -175,10 +199,10 @@ const boardSlice = createSlice({
         }).addCase(createBoard.rejected, (state) => {
             state.isLoading = false;
             state.name = '';
-            state.columns = {
-                [initialIDs[0]]: '',
-                [initialIDs[1]]: '',
-            };
+            state.columns = [
+                {[initialIDs[0]]: ''},
+                {[initialIDs[1]]: '',}
+            ];
             state.columnErrors = {
                 [initialIDs[0]]: false,
                 [initialIDs[1]]: false,
@@ -206,10 +230,10 @@ const boardSlice = createSlice({
             state.activeBoard = action.payload.updatedBoard;
             state.isEditing = false;
             state.name = '';
-            state.columns = {
-                [initialIDs[0]]: '',
-                [initialIDs[1]]: '',
-            };
+            state.columns = [
+                {[initialIDs[0]]: ''},
+                {[initialIDs[1]]: '',}
+            ];
             state.columnErrors = {
                 [initialIDs[0]]: false,
                 [initialIDs[1]]: false,
@@ -218,10 +242,10 @@ const boardSlice = createSlice({
             state.isLoading = false;
             state.isEditing = false;
             state.name = '';
-            state.columns = {
-                [initialIDs[0]]: '',
-                [initialIDs[1]]: '',
-            };
+            state.columns = [
+                {[initialIDs[0]]: ''},
+                {[initialIDs[1]]: '',}
+            ];
             state.columnErrors = {
                 [initialIDs[0]]: false,
                 [initialIDs[1]]: false,

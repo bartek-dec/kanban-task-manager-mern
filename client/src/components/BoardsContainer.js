@@ -16,17 +16,24 @@ const BoardsContainer = () => {
     }, []);
 
     useEffect(() => {
-        // navigate to active board on startup and set active board after deleting one
+        // navigate to active board on startup or set active board after deleting one
         if (!activeBoard && boards.length > 0) {
             const {_id: id} = boards[0];
             dispatch(setActiveBoard(id));
-            dispatch(handleTaskChange({name: 'status', value: boards[0]?.columns?.[0]}));
+            dispatch(handleTaskChange({name: 'status', value: boards[0]?.columns?.[0]?.column}));
             dispatch(getTasks(id));
             navigate(`/${id}`);
         } else if (!activeBoard && boards.length === 0) {
             navigate('/');
         }
     }, [boards]);
+
+    useEffect(() => {
+        if (activeBoard !== null) {
+            const {_id: id} = activeBoard;
+            dispatch(getTasks(id));
+        }
+    }, [activeBoard]);
 
     return (
         <Wrapper>

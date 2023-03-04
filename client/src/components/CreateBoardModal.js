@@ -67,8 +67,8 @@ const CreateBoardModal = () => {
         let emptyColumns = false;
         const currentErrors = {...columnErrors};
 
-        Object.entries(columns).forEach((item) => {
-            const [id, value] = item;
+        columns.forEach((item) => {
+            const [id, value] = Object.entries(item)[0];
             if (!value) {
                 currentErrors[id] = true;
                 emptyColumns = true;
@@ -88,11 +88,12 @@ const CreateBoardModal = () => {
         }
 
         if (isEditing) {
-            dispatch(editBoard({name, columns: Object.values(columns), id: activeBoard._id}));
+            //dispatch(editBoard({name, columns: Object.values(columns), id: activeBoard._id}));
+            dispatch(editBoard({name, columns, id: activeBoard._id}));
             return;
         }
 
-        dispatch(createBoard({name, columns: Object.values(columns)}));
+        dispatch(createBoard({name, columns}));
     }
 
     return (
@@ -109,10 +110,11 @@ const CreateBoardModal = () => {
                 <p>Columns</p>
                 <div className='columns-container'>
 
-                    {Object.keys(columns).map((id) => {
+                    {columns.map((item) => {
+                        const id = Object.keys(item)[0];
                         return (
                             <div key={id} className='column'>
-                                <FormInputSmall type='text' name={id} value={columns[id]} placeholder='e.g Todo'
+                                <FormInputSmall type='text' name={id} value={item[id]} placeholder='e.g Todo'
                                                 error={columnErrors[id]} labelText='Last Name'
                                                 handleChange={handleRowChange}/>
 
