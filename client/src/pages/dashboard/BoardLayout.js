@@ -8,7 +8,8 @@ const BoardLayout = () => {
 
     return (
         <Wrapper column={activeBoard?.columns.length}>
-            {activeBoard?.columns.map((column, index) => {
+            {activeBoard?.columns.map((columnObj, index) => {
+                const {column} = columnObj;
                 return (
                     // column in the board is the same as status in task
                     <Column key={index} index={index} column={column} tasks={tasks[column]}/>

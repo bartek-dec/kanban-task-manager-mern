@@ -35,7 +35,7 @@ const CreateTaskModal = () => {
             dispatch(closeCreateTaskModal());
             setTimeout(() => {
                 dispatch(setIsEditing(false));
-                dispatch(resetTask(activeBoard?.columns[0]));
+                dispatch(resetTask(activeBoard?.columns[0].column));
             }, 150);
         }
     }
@@ -137,7 +137,7 @@ const CreateTaskModal = () => {
                 </button>
 
                 <SelectInput name='status' value={status} handleChange={handleChange} labelText='Status'
-                             options={activeBoard?.columns}/>
+                             options={activeBoard?.columns.map((item) => item.column)}/>
 
                 <button disabled={isLoading} type='submit' className='btn new-board-btn create-board-btn'>
                     {isEditing ? 'Edit Task' : 'Create Task'}
