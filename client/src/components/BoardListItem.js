@@ -2,7 +2,7 @@ import {TbLayoutBoardSplit} from 'react-icons/tb';
 import {useDispatch, useSelector} from "react-redux";
 import {setActiveBoard} from "../features/board/boardSlice";
 import {closeSidebarModal} from '../features/sidebarSlice/sidebarSlice';
-import {getTasks, handleTaskChange} from "../features/task/taskSlice";
+import {handleTaskChange} from "../features/task/taskSlice";
 import {NavLink} from "react-router-dom";
 import {useEffect} from "react";
 
@@ -16,7 +16,6 @@ const BoardListItem = ({title, id}) => {
 
     const handleClick = () => {
         dispatch(setActiveBoard(id));
-        dispatch(getTasks(id));
         dispatch(closeSidebarModal());
     }
 

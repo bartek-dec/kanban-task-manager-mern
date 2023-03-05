@@ -3,7 +3,7 @@ import {useSelector, useDispatch} from "react-redux";
 import {closeModal} from "../features/logoutSlice/logoutSlice";
 import {setUser, setToken} from "../features/user/userSlice";
 import {removeUserFromLocalStorage} from "../utils/localStorage";
-import {setActiveBoard} from '../features/board/boardSlice';
+import {setActiveBoard, setBoards} from '../features/board/boardSlice';
 
 const LogoutModal = () => {
     const {isModalOpen} = useSelector((state) => state.logout);
@@ -20,6 +20,7 @@ const LogoutModal = () => {
         dispatch(setToken(null));
         dispatch(setUser(null));
         dispatch(setActiveBoard(null));
+        dispatch(setBoards());
         removeUserFromLocalStorage();
     }
 

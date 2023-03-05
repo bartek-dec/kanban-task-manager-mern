@@ -105,6 +105,9 @@ const boardSlice = createSlice({
         setAlertText: (state, action) => {
             state.alertText = action.payload;
         },
+        setBoards: (state) => {
+            state.boards = [];
+        },
         setActiveBoard: (state, action) => {
             if (action.payload === null) {
                 state.activeBoard = null;
@@ -264,6 +267,7 @@ export const {
     showDeleteModal,
     closeDeleteModal,
     setAlertText,
+    setBoards,
     setActiveBoard,
     setNameError,
     setColumnErrors,
